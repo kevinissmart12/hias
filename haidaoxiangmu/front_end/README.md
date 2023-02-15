@@ -1,19 +1,15 @@
-# hias
+# hias 前端
 
 ## Project setup
 ```
-yarn install
+npm run serve
 ```
 
-### Compiles and hot-reloads for development
+### server 后端 Project setup
 ```
-yarn serve
+npm run start
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
