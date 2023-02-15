@@ -1,6 +1,4 @@
-# hias 前端
-
-## Project setup
+# hias 前端 Project setup
 ```
 npm run serve
 ```
