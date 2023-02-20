@@ -187,8 +187,9 @@ export default {
 
         },
         infoWindowOpen(item){
-
+            // console.log(item);
             this.$store.commit('ponds/setClickFn',true)
+            this.$store.commit('ponds/setCenter')
 
             if(item.id==65535){
                 this.infoPosition={
@@ -393,6 +394,8 @@ export default {
             this.drawingMarker={}
             //停止绘制
             this.$store.commit('ponds/setAddPond',false)
+            
+
             
         },
         paintPolygon (e) {

@@ -125,7 +125,6 @@ export default {
                 if(res.data.status==200){
                     this.townOption=res.data.data.data
                     //赋值
-
                 }
             })
         },

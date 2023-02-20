@@ -1,44 +1,90 @@
 <template>
     <div class="allProducts">
-        <el-table
-            :data="tempTableData"
-            style="width: 100%">
-            <el-table-column
-                :prop="item.prop"
-                :label="item.label"
-                :width="item.width"
-                v-for="(item,index) in tableItem" 
-                :key="index"
-            >
-                <template slot-scope="scope">
-                    <img v-if="item.prop=='imgUrl'" :src="scope.row.imgUrl" alt="" width="90">
-                    <div v-else>{{scope.row[item.prop]}}</div>
-                </template>
-            </el-table-column>
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>养殖信息列表</span>
+            </div>
 
-            <el-table-column
-                fixed="right"
-                label="操作"
-                width="100">
-                <template slot-scope="scope">
-                    <el-button @click="deleteProduct(scope.row)" style="color:red" type="text" size="small" >删除</el-button>
-                    <el-button @click="goProductEdit(scope.row)" type="text" size="small">编辑</el-button>
-                </template>
-            </el-table-column>
+            <el-table
+                :data="tempTableData"
+                style="width: 100%">
+                <el-table-column
+                    :prop="item.prop"
+                    :label="item.label"
+                    :width="item.width"
+                    v-for="(item,index) in tableItem" 
+                    :key="index"
+                >
+                    <template slot-scope="scope">
+                        <img v-if="item.prop=='imgUrl'" :src="scope.row.imgUrl" alt="" width="90">
+                        <div v-else>{{scope.row[item.prop]}}</div>
+                    </template>
+                </el-table-column>
 
-        </el-table>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="150">
+                    <template slot-scope="scope">
+                        <el-button @click="checkProduct(scope.row)" type="text" size="small">查看</el-button>
+                        <el-button @click="goProductEdit(scope.row)" type="text" size="small">编辑</el-button>
+                        <el-button @click="deleteProduct(scope.row)" style="color:red" type="text" size="small" >删除</el-button>
+                    </template>
+                </el-table-column>
+
+            </el-table>
+
+            <!--  分页 -->
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5,10]"
+                :page-size="pagesize"
+                layout="total, sizes, prev, pager, next"
+                :total="TableLength">
+            </el-pagination>
+
+        </el-card>
+
+        <el-dialog
+            title="养殖信息"
+            :visible.sync="dialogVisible"
+            width="60%"
+        >
+            <table border="1" style="width:100%"  align="center">
+                <tr>
+                    <td  width="100px" height="50px" align="center">品种名称</td>
+                    <td width="40%">{{productInfo.name}}</td>
+                    <td rowspan="3" align="center"><img :src="productInfo.imgUrl" style="height:150px"></td>
+                </tr>
+                <tr>
+                    <td width="100px" height="50px" align="center">所属种类</td>
+                    <td>{{productInfo.type}}</td>
+                </tr>
+                <tr>
+                    <td width="100px" height="50px" align="center">养殖方式</td>
+                    <td>{{productInfo.breedMethod}}</td>
+                </tr>
+                <tr>
+                    <td align="center">描述</td>
+                    <td colspan="2"  v-html="productInfo.description"></td>
+                </tr>
+                <tr>
+                    <td align="center">养殖技术</td>
+                    <td colspan="2"  v-html="productInfo.breedTech"></td>
+                </tr>
+                <tr>
+                    <td align="center">病害</td>
+                    <td colspan="2"  v-html="productInfo.diseases"></td>
+                </tr>
+            </table>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">关闭</el-button>
+            </span>
+        </el-dialog>
 
 
-        <!--  分页 -->
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[3, 6]"
-            :page-size="pagesize"
-            layout="total, sizes, prev, pager, next"
-            :total="TableLength">
-        </el-pagination>
 
 
 
@@ -57,14 +103,16 @@ export default {
                 {'id':'2',prop:'imgUrl',label:'图片',width:'180'},
                 {'id':'3',prop:'type',label:'所属种类',width:'180'},
                 {'id':'4',prop:'breedMethod',label:'养殖方式',width:'180'}, 
-                {'id':'5',prop:'breedTech',label:'养殖技术',width:'300'}, 
-                {'id':'6',prop:'description',label:'描述',width:'300'}, 
-                {'id':'7',prop:'diseases',label:'病害',width:'300'},
+                // {'id':'5',prop:'breedTech',label:'养殖技术',width:'300'}, 
+                // {'id':'6',prop:'description',label:'描述',width:'300'}, 
+                // {'id':'7',prop:'diseases',label:'病害',width:'300'},
                 {'id':'8',prop:'checkStatus',label:'审核状况',width:'100'},
 
             ],
             currentPage:1,
-            pagesize:3
+            pagesize:5,
+            dialogVisible: false,
+            productInfo:{},
         }
     },
     methods:{
@@ -81,6 +129,11 @@ export default {
                 }
 
             })
+        },
+        checkProduct(item){
+            this.dialogVisible=true
+            this.productInfo=item
+            
         },
         goProductEdit(item){
             this.$router.push({
@@ -132,5 +185,18 @@ export default {
 </script>
 
 <style lang='less' scoped>
-
+    .allProducts{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        .el-card{
+            margin-left:12.5%;
+            width: 75%;
+            height: 100%;
+        }
+    }
+    table {
+        border-collapse: collapse;
+    }
+    
 </style>

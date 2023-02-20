@@ -145,9 +145,9 @@ export default {
             state.estimateArea=''
             state.area=''
             state.pondsType=''
-            // state.county=''
-            // state.town=''
-            // state.village=''
+            state.county=''
+            state.town=''
+            state.village=''
             state.polygon=[]
             state.comment=''
             state.checkStatus=0
@@ -308,72 +308,94 @@ export default {
         },
         setCounty(state,data){
             state.county=data
-            setTimeout(()=>{
-                if(!state.clickFn){
-                    //设置中心点
-                    state.center='舟山市'
-                    state.countyOption.forEach((i,v)=>{
-                        if(i.value==data){
-                            state.center+=i.label
-                        }
-                    })
-                }
-            },200)
+            // setTimeout(()=>{
+            //     if(!state.clickFn){
+            //         //设置中心点
+            //         state.center='舟山市'
+            //         state.countyOption.forEach((i,v)=>{
+            //             if(i.value==data){
+            //                 state.center+=i.label
+            //             }
+            //         })
+            //     }
+            // },200)
 
 
         },
         setTown(state,data){
             state.town=data
-            setTimeout(()=>{
-                if(!state.clickFn){
-                    //设置中心点
-                    state.center='舟山市'
-                    state.countyOption.forEach((i,v)=>{
-                        if(i.value==state.county){
-                            state.center+=i.label
-                        }
-                    })
-                    state.townData.forEach((i,v)=>{
-                        if(i.id==data){
-                            state.center+=i.town
-                        }
-                    })
-                }
-            },200)
+            // setTimeout(()=>{
+            //     if(!state.clickFn){
+            //         //设置中心点
+            //         state.center='舟山市'
+            //         state.countyOption.forEach((i,v)=>{
+            //             if(i.value==state.county){
+            //                 state.center+=i.label
+            //             }
+            //         })
+            //         state.townData.forEach((i,v)=>{
+            //             if(i.id==data){
+            //                 state.center+=i.town
+            //             }
+            //         })
+            //     }
+            // },200)
 
         },
         setVillage(state,data){
             state.village=data
+            // setTimeout(()=>{
+            //     if(!state.clickFn){
+            //         //设置中心点
+            //         state.center='舟山市'
+            //         state.countyOption.forEach((i,v)=>{
+            //             if(i.value==state.county){
+            //                 state.center+=i.label
+            //             }
+            //         })
+            //         state.townData.forEach((i,v)=>{
+            //             if(i.id==state.town){
+            //                 state.center+=i.town
+            //             }
+            //         })
+            //         state.villageData.forEach((i,v)=>{
+            //             if(i.id==data){
+            //                 state.center+=i.village
+            //             }
+            //         })
+            //     }else{
+            //         state.center={
+            //             lng:state.lng,
+            //             lat:state.lat
+            //         }
+            //     }
+            // },200)
+
+        },
+        setCenter(state){
             setTimeout(()=>{
-                if(!state.clickFn){
                     //设置中心点
-                    state.center='舟山市'
-                    state.countyOption.forEach((i,v)=>{
-                        if(i.value==state.county){
-                            state.center+=i.label
-                        }
-                    })
-                    state.townData.forEach((i,v)=>{
-                        if(i.id==state.town){
-                            state.center+=i.town
-                        }
-                    })
-                    state.villageData.forEach((i,v)=>{
-                        if(i.id==data){
-                            state.center+=i.village
-                        }
-                    })
-                }else{
+                    // state.center='舟山市'
                     state.center={
                         lng:state.lng,
                         lat:state.lat
                     }
-                }
-            },200)
-
-        },
-        setCenter(state){
-            state.center='舟山市'
+                    // state.countyOption.forEach((i,v)=>{
+                    //     if(i.value==state.county){
+                    //         state.center+=i.label
+                    //     }
+                    // })
+                    // state.townData.forEach((i,v)=>{
+                    //     if(i.id==state.town){
+                    //         state.center+=i.town
+                    //     }
+                    // })
+                    // state.villageData.forEach((i,v)=>{
+                    //     if(i.id==state.village){
+                    //         state.center+=i.village
+                    //     }
+                    // })
+            },100)
         },
 
         setClickFn(state,data){

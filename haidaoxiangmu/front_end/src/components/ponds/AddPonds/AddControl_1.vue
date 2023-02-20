@@ -480,7 +480,7 @@ export default {
     },
     watch:{
         'form.county'(n,o){
-            // if(n=='')return
+            if(n=='')return
             // //重新选择
             // if(n!==o){
             //     //清空
@@ -493,7 +493,7 @@ export default {
             this.updateForm(this.form.county,"setCounty")
         },
         'form.town'(n,o){
-            // if(n=='')return
+            if(n=='')return
             // //重新选择
             // if(n!==o){
             //     //清空
@@ -504,7 +504,7 @@ export default {
             this.updateForm(this.form.town,"setTown")
         },
         'form.village'(n,o){
-            // if(n=='')return
+            if(n=='')return
             this.updateForm(this.form.village,"setVillage")
 
         },

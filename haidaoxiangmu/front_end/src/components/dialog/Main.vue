@@ -38,7 +38,247 @@
             :visible.sync="dialogVisible"
             width="75%"
         >
-            <el-table v-if="tempProductTableData.length" :data="tempProductTableData" stripe style="width: 100%">
+            <!-- product -->
+            <div v-if="CheckingData.op_obj==2">CD 
+                <table border="1" style="width:100%"  align="center">
+                    <tr>
+                        <td width="100px" height="50px"></td>
+                        <td align="center">新内容</td>
+                        <td align="center">旧内容</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">品种名称</td>
+                        <td align="center">{{newProductTableData.name||'无'}}</td>
+                        <td align="center">{{oldProductTableData.name||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">所属种类</td>
+                        <td align="center">{{newProductTableData.type||'无'}}</td>
+                        <td align="center">{{oldProductTableData.type||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">养殖方式</td>
+                        <td align="center">{{newProductTableData.breedMethod||'无'}}</td>
+                        <td align="center">{{oldProductTableData.breedMethod||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">图片</td>
+                        <td align="center"><img :src="newProductTableData.imgUrl||''" style="width:100px"></td>
+                        <td align="center"><img :src="oldProductTableData.imgUrl||''" style="width:100px"></td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">描述</td>
+                        <td align="center" v-html="newProductTableData.description||'无'"></td>
+                        <td align="center" v-html="oldProductTableData.description||'无'"></td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">养殖技术</td>
+                        <td align="center" v-html="newProductTableData.breedTech||'无'"></td>
+                        <td align="center" v-html="oldProductTableData.breedTech||'无'"></td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">病害</td>
+                        <td align="center" v-html="newProductTableData.diseases||'无'"></td>
+                        <td align="center" v-html="oldProductTableData.diseases||'无'"></td>
+                    </tr>
+                </table>
+            </div>
+            <!-- ponds -->
+            <div v-if="CheckingData.op_obj==0">
+                <table border="1" style="width:100%"  align="center">
+                    <tr>
+                        <td width="100px" height="50px"></td>
+                        <td align="center">新内容</td>
+                        <td align="center" v-if="oldpondTableData!={}">旧内容</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">区块编号</td>
+                        <td align="center">{{newpondTableData.number||'无'}}</td>
+                        <td align="center">{{oldpondTableData.number||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">纬度</td>
+                        <td align="center">{{newpondTableData.lat||'无'}}</td>
+                        <td align="center">{{oldpondTableData.lat||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">经度</td>
+                        <td align="center">{{newpondTableData.lng||'无'}}</td>
+                        <td align="center">{{oldpondTableData.lng||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">面积</td>
+                        <td align="center">{{newpondTableData.area||'无'}}</td>
+                        <td align="center">{{oldpondTableData.area||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">估算面积</td>
+                        <td align="center">{{newpondTableData.estimateArea||'无'}}</td>
+                        <td align="center">{{oldpondTableData.estimateArea||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">所在区/县</td>
+                        <td align="center">{{newpondTableData.county||'无'}}</td>
+                        <td align="center">{{oldpondTableData.county||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">所在镇</td>
+                        <td align="center">{{newpondTableData.town||'无'}}</td>
+                        <td align="center">{{oldpondTableData.town||'无'}}</td>
+                    </tr>                    
+                    <tr>
+                        <td width="100px" height="50px" align="center">所在村</td>
+                        <td align="center">{{newpondTableData.village||'无'}}</td>
+                        <td align="center">{{oldpondTableData.village||'无'}}</td>
+                    </tr>                    
+                    <tr>
+                        <td width="100px" height="50px" align="center">多边形</td>
+                        <td align="center">{{newpondTableData.polygon||'无'}}</td>
+                        <td align="center">{{oldpondTableData.polygon||'无'}}</td>
+                    </tr>                    
+                    <tr>
+                        <td width="100px" height="50px" align="center">拥有者</td>
+                        <td align="center">{{newpondTableData.ownerId||'无'}}</td>
+                        <td align="center">{{oldpondTableData.ownerId||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">养殖品种</td>
+                        <td align="center">{{newpondTableData.productId||'无'}}</td>
+                        <td align="center">{{oldpondTableData.productId||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">留言</td>
+                        <td align="center">{{newpondTableData.comment||'无'}}</td>
+                        <td align="center">{{oldpondTableData.comment||'无'}}</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- owner -->
+            <div v-if="CheckingData.op_obj==1">
+                <table border="1" style="width:100%"  align="center">
+                    <tr>
+                        <td width="100px" height="50px"></td>
+                        <td align="center">新内容</td>
+                        <td align="center">旧内容</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">名称/法人</td>
+                        <td align="center">{{newownerTableData.name||'无'}}</td>
+                        <td align="center">{{oldownerTableData.name||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">联系电话</td>
+                        <td align="center">{{newownerTableData.mobile||'无'}}</td>
+                        <td align="center">{{oldownerTableData.mobile||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">出生年月</td>
+                        <td align="center">{{newownerTableData.birthday||'无'}}</td>
+                        <td align="center">{{oldownerTableData.birthday||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">性别</td>
+                        <td align="center">{{newownerTableData.sex||'无'}}</td>
+                        <td align="center">{{oldownerTableData.sex||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">图片</td>
+                        <td align="center"><img :src="newownerTableData.imgUrl||''" style="width:100px"></td>
+                        <td align="center"><img :src="oldownerTableData.imgUrl||''" style="width:100px"></td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">家庭住址</td>
+                        <td align="center">{{newownerTableData.address||'无'}}</td>
+                        <td align="center">{{oldownerTableData.address||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">所在区/县</td>
+                        <td align="center">{{newownerTableData.county||'无'}}</td>
+                        <td align="center">{{oldownerTableData.county||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">所在镇</td>
+                        <td align="center">{{newownerTableData.town||'无'}}</td>
+                        <td align="center">{{oldownerTableData.town||'无'}}</td>
+                    </tr>                    
+                    <tr>
+                        <td width="100px" height="50px" align="center">所在村</td>
+                        <td align="center">{{newownerTableData.village||'无'}}</td>
+                        <td align="center">{{oldownerTableData.village||'无'}}</td>
+                    </tr>                    
+                    <tr>
+                        <td width="100px" height="50px" align="center">从业时间</td>
+                        <td align="center">{{newownerTableData.engagedTime||'无'}}</td>
+                        <td align="center">{{oldownerTableData.engagedTime||'无'}}</td>
+                    </tr>                    
+                    <tr>
+                        <td width="100px" height="50px" align="center">文化程度</td>
+                        <td align="center">{{newownerTableData.educationLevel||'无'}}</td>
+                        <td align="center">{{oldownerTableData.educationLevel||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">农民头衔</td>
+                        <td align="center">{{newownerTableData.farmerTitle||'无'}}</td>
+                        <td align="center">{{oldownerTableData.farmerTitle||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">组织机构代码</td>
+                        <td align="center">{{newownerTableData.departmentId||'无'}}</td>
+                        <td align="center">{{oldownerTableData.departmentId||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">类型</td>
+                        <td align="center">{{newownerTableData.discriminator||'无'}}</td>
+                        <td align="center">{{oldownerTableData.discriminator||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">公司</td>
+                        <td align="center">{{newownerTableData.companyName||'无'}}</td>
+                        <td align="center">{{oldownerTableData.companyName||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">成立时间</td>
+                        <td align="center">{{newownerTableData.establishedTime||'无'}}</td>
+                        <td align="center">{{oldownerTableData.establishedTime||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">固定资产</td>
+                        <td align="center">{{newownerTableData.fixedAssets||'无'}}</td>
+                        <td align="center">{{oldownerTableData.fixedAssets||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">经营内容</td>
+                        <td align="center">{{newownerTableData.businessContents||'无'}}</td>
+                        <td align="center">{{oldownerTableData.businessContents||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">无公害基地</td>
+                        <td align="center">{{newownerTableData.isBaseOfEmployee||'无'}}</td>
+                        <td align="center">{{oldownerTableData.isBaseOfEmployee||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">员工人数</td>
+                        <td align="center">{{newownerTableData.numberOfEmployee||'无'}}</td>
+                        <td align="center">{{oldownerTableData.numberOfEmployee||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">特色产品</td>
+                        <td align="center">{{newownerTableData.featuredProducts||'无'}}</td>
+                        <td align="center">{{oldownerTableData.featuredProducts||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">信用等级</td>
+                        <td align="center">{{newownerTableData.creditLevel||'无'}}</td>
+                        <td align="center">{{oldownerTableData.creditLevel||'无'}}</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="50px" align="center">备注</td>
+                        <td align="center">{{newownerTableData.comment||'无'}}</td>
+                        <td align="center">{{oldownerTableData.comment||'无'}}</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- <el-table v-if="tempProductTableData.length" :data="tempProductTableData" stripe style="width: 100%">
                 <el-table-column type="expand">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
@@ -225,7 +465,7 @@
                         <div v-else>{{scope.row[item.prop]}}</div>
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table> -->
 
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="pass()">通  过</el-button>
@@ -267,7 +507,8 @@ export default {
                 {'id':'11',prop:'productId',label:'养殖品种',width:'150'},
                 {'id':'12',prop:'comment',label:'留言',width:'150'},
             ],
-            temppondTableData:[],
+            newpondTableData:{},
+            oldpondTableData:{},
             //拥有者
             ownerTableItem:[
                 {'id':'1',prop:'name',label:'名称/法人',width:'150'},
@@ -295,7 +536,9 @@ export default {
                 {'id':'23',prop:'comment',label:'备注',width:'150'},
 
             ],
-            tempownerTableData:[],
+            newownerTableData:{},
+            oldownerTableData:{},
+
             //水产品
             productTableItem:[
                 {'id':'1',prop:'name',label:'水产品名称',width:'150'},
@@ -306,7 +549,8 @@ export default {
                 {'id':'6',prop:'breedTech',label:'养殖技术',width:'150'},
                 {'id':'7',prop:'diseases',label:'病害',width:'150'},
             ],
-            tempProductTableData:[],
+            newProductTableData:{},
+            oldProductTableData:{},
 
         }
     },
@@ -438,15 +682,23 @@ export default {
 
         },
         check(item){
-            // console.log(item,item.id,item.op_obj);
+            // console.log(item);
             this.dialogVisible=true
-            this.tempProductTableData=[]
-            this.temppondTableData=[]
-            this.tempownerTableData=[]
+            
+            // console.log(JSON.parse(decodeURIComponent(item.old_obj)));
+
+            this.newpondTableData={}
+            this.oldpondTableData={}
+            this.newownerTableData={}
+            this.oldownerTableData={}
+            this.newProductTableData={}
+            this.oldProductTableData={}
+
             this.$store.commit('dialog/setCheckingData',item)
             if(item.new_obj){
-                console.log(item);
-                let new_obj=JSON.parse(item.new_obj)
+                // console.log(item);
+                let new_obj=JSON.parse(decodeURIComponent(item.new_obj))
+                // console.log(new_obj);
                 //城镇信息
                 this.CountyData.forEach((ci,cv)=>{
                     if(ci.id==new_obj.county){
@@ -477,15 +729,15 @@ export default {
                 })
 
                 if(item.op_obj=='池塘信息'){
-                    this.temppondTableData.push(new_obj)
+                    this.newpondTableData=new_obj
                 }else if(item.op_obj=='拥有者信息'){
-                    this.tempownerTableData.push(new_obj)
+                    this.newownerTableData=new_obj
                 }else if(item.op_obj=='水产品信息'){
-                    this.tempProductTableData.push(new_obj)
+                    this.newProductTableData=new_obj
                 }
             }
             if(item.old_obj){
-                let old_obj=JSON.parse(item.old_obj)
+                let old_obj=JSON.parse(decodeURIComponent(item.old_obj))
                 //城镇信息
                 this.CountyData.forEach((ci,cv)=>{
                     if(ci.id==old_obj.county){
@@ -516,13 +768,14 @@ export default {
                 })
 
                 if(item.op_obj=='池塘信息'){
-                    this.temppondTableData.push(old_obj)
+                    this.oldpondTableData=old_obj
                 }else if(item.op_obj=='拥有者信息'){
-                    this.tempownerTableData.push(old_obj)
+                    this.oldownerTableData=old_obj
                 }else if(item.op_obj=='水产品信息'){
-                    this.tempProductTableData.push(old_obj)
+                    this.oldProductTableData=old_obj
                 }
             }
+            
         },
         pass(){
             let data=this.qs.stringify({
@@ -652,5 +905,8 @@ export default {
         margin-right: 0;
         margin-bottom: 0;
         width: 100%;
+    }
+    table {
+        border-collapse: collapse;
     }
 </style>

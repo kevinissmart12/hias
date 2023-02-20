@@ -2,46 +2,111 @@
     <div class="addProducts">
         
         <!-- card -->
-        <el-card>
-
+        <el-card >
+            <div slot="header" class="clearfix">
+                <span>卡片名称</span>
+            </div>
             <!-- form -->
-            <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="品种名称">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
+            <el-form ref="form" :model="form" label-width="80px" label-position="left">
+                <div class="form_flex">
+                    <div class="left">
+                        <el-form-item label="品种名称" >
+                            <el-input v-model.trim="form.name" style="width:400px;"></el-input>
+                        </el-form-item>
 
-                <el-form-item label="所属种类">
-                    <el-input v-model="form.type"></el-input>
-                </el-form-item>
+                        <el-form-item label="所属种类">
+                            <el-select v-model="form.type" placeholder="请选择" style="width:400px;">
+                                <el-option
+                                v-for="item in typeList"
+                                :key="item.id"
+                                :label="item.content"
+                                :value="item.content">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="养殖方法" >
+                            <el-select v-model="form.breedMethod" placeholder="请选择" style="width:400px;">
+                                <el-option
+                                v-for="item in breedMethodList"
+                                :key="item.id"
+                                :label="item.content"
+                                :value="item.content">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>
+                    <div class="right">
+                        <el-form-item label="图片" class="pic">
+                            <el-upload
+                                class="avatar-uploader"
+                                action="#"
+                                :show-file-list="false"
+                                :before-upload='beforeUpload'
+                            >
+                                <img v-if="form.imgUrl" :src="form.imgUrl" class="avatar" style="border:1px solid rgba(0,0,0,.3);border-radius:5px">
+                                <i v-else class="el-icon-plus avatar-uploader-icon" style="border:1px solid rgba(0,0,0,.3);border-radius:5px"></i>
+                            </el-upload>
+                        </el-form-item>
+                    </div>
+                </div>
 
                 <el-form-item label="描述">
-                    <el-input type="textarea" autosize v-model="form.description"></el-input>
+                    <div style="border: 1px solid #ccc;">
+                        <Toolbar
+                            style="border-bottom: 1px solid #ccc"
+                            :editor="editor_desc"
+                            :defaultConfig="toolbarConfig"
+                            :mode="mode"
+                        />
+                        <Editor
+                            style="height: 400px; overflow-y: hidden;"
+                            v-model="form.description"
+                            :defaultConfig="editorConfig"
+                            :mode="mode"
+                            @onCreated="onCreated_desc"
+                        />
+                    </div>
                 </el-form-item>
 
-                <el-form-item label="图片">
-                    <el-upload
-                        class="avatar-uploader"
-                        action="#"
-                        :show-file-list="false"
-                        :before-upload='beforeUpload'
-                    >
-                        <img v-if="form.imgUrl" :src="form.imgUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-
-                <el-form-item label="养殖方法">
-                    <el-input v-model="form.breedMethod"></el-input>
-                </el-form-item>
                 <el-form-item label="养殖技术">
-                    <el-input type="textarea" autosize v-model="form.breedTech"></el-input>
+                    <div style="border: 1px solid #ccc;">
+                        <Toolbar
+                            style="border-bottom: 1px solid #ccc"
+                            :editor="editor_tech"
+                            :defaultConfig="toolbarConfig"
+                            :mode="mode"
+                        />
+                        <Editor
+                            style="height: 400px; overflow-y: hidden;"
+                            v-model="form.breedTech"
+                            :defaultConfig="editorConfig"
+                            :mode="mode"
+                            @onCreated="onCreated_tech"
+                        />
+                    </div>
                 </el-form-item>
 
-                <el-form-item label="病害">
-                    <el-input type="textarea" autosize v-model="form.diseases"></el-input>
+                <el-form-item label="病害" >
+                    <div style="border: 1px solid #ccc;">
+                        <Toolbar
+                            style="border-bottom: 1px solid #ccc"
+                            :editor="editor_dise"
+                            :defaultConfig="toolbarConfig"
+                            :mode="mode"
+                        />
+                        <Editor
+                            style="height: 400px; overflow-y: hidden;"
+                            v-model="form.diseases"
+                            :defaultConfig="editorConfig"
+                            :mode="mode"
+                            @onCreated="onCreated_dise"
+                        />
+                    </div>
                 </el-form-item>
 
-                <el-form-item>
+                
+
+                <el-form-item class="btn" >
                     <el-button v-if="ID" type="primary" @click='updateProducts'>保存</el-button>
                     <el-button v-else type="primary" @click="addProducts">新增</el-button>
 
@@ -59,6 +124,8 @@
 
 <script>
 import random from '../../api/random'
+import Product from '../../api/product'
+
 export default {
     name:'addProducts',
     data() {
@@ -73,6 +140,20 @@ export default {
                 breedTech:'',
                 diseases:'',
             },
+
+            typeList:[],
+            breedMethodList:[],
+
+            //以下为富文本插件的参数
+            editor_desc: null,
+            editor_tech: null,
+            editor_dise: null,
+
+
+            html: '<p>hello</p>',
+            toolbarConfig: { },
+            editorConfig: { placeholder: '请输入内容...' },
+            mode: 'default', // or 'simple'
 
         };
     },
@@ -105,7 +186,32 @@ export default {
         },
         //上传水产信息
         addProducts(){
+            //对未填写的内容进行判断
+            if(this.form.name==''){
+                return this.$message.warning('请填写品种名称');
+            }
+            if(this.form.type==''){
+                return this.$message.warning('请选择所属种类');
+            }
+            if(this.form.breedMethod==''){
+                return this.$message.warning('请选择养殖方法');
+            }
+            if(this.form.imgUrl==''){
+                return this.$message.warning('请上传图片');
+            }
+            if(this.form.description==''){
+                return this.$message.warning('请填写描述');
+            }
+            if(this.form.breedTech==''){
+                return this.$message.warning('请填写养殖技术');
+            }
+            if(this.form.diseases==''){
+                return this.$message.warning('请填写病害');
+            }
+
+
             let data=this.qs.stringify(this.form)
+            
             this.$axios({
                 url:'/api/products/add',
                 method:'POST',
@@ -160,17 +266,44 @@ export default {
             this.$router.push('/products/all')
         },
 
+        onCreated_desc(editor) {
+            this.editor_desc = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+        },
+        onCreated_tech(editor) {
+            this.editor_tech = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+        },
+        onCreated_dise(editor) {
+            this.editor_dise = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+        },
 
-
-
+    },
+    created() {
+        this.typeList=Product.type
+        this.breedMethodList=Product.breedMethod
     },
     mounted(){
         if(this.ID==undefined){
             //添加
         }else{
+            //查看/编辑
             this.getProducts(this.ID)
         }
+
+        // setTimeout(() => {
+        //     this.html = '<p>模拟 Ajax 异步设置内容 HTML</p>'
+        // }, 1500)
         
+    },
+    beforeDestroy() {
+        const editor_desc = this.editor_desc
+        const editor_tech = this.editor_tech
+        const editor_dise = this.editor_dise
+
+        if (editor_desc == null&&editor_tech==null&&editor_dise==null) return
+        editor_desc.destroy() // 组件销毁时，及时销毁编辑器
+        editor_tech.destroy() // 组件销毁时，及时销毁编辑器
+        editor_dise.destroy() // 组件销毁时，及时销毁编辑器
+
     },
     computed:{
         ID(){
@@ -207,12 +340,31 @@ export default {
     }
 
     .addProducts{
+        position: relative;
         width: 100%;
         height: 100%;
-
         .el-card{
-            width: 100%;
+            margin-left:12.5%;
+            width: 75%;
             height: 100%;
+            min-width:900px;
+
+        }
+    }
+
+    .form_flex{
+        display: flex;
+        .right{
+            margin-left:50px;
+            width: 100%;
+        }
+    }
+    .el-form{
+        .btn{
+            text-align: center;
+        }
+        ::v-deep .el-form-item__content{
+            margin:0;
         }
     }
 

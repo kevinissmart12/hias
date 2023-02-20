@@ -134,9 +134,10 @@ export default {
             }
             let op_obj_id=''
             if(data.new_obj){
-                op_obj_id=JSON.parse(data.new_obj).id
-            }else if(data.old_obj){
-                op_obj_id=JSON.parse(data.old_obj).id
+                op_obj_id=JSON.parse(decodeURIComponent(data.new_obj)).id
+            }
+            if(data.old_obj){
+                op_obj_id=JSON.parse(decodeURIComponent(data.old_obj)).id
             }
             obj.op_obj_id=op_obj_id
             state.checkingData=obj
