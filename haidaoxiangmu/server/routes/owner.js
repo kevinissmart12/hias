@@ -61,7 +61,7 @@ router.post('/add',function(req,res,next){
             checkResult:userInfo.isAdmin==1?'管理员直接添加':'用户添加',
             time:new Date(),
             old_obj:'',
-            new_obj:JSON.stringify(ownerInfo)
+            new_obj:encodeURIComponent(JSON.stringify(ownerInfo))
         }
         db.query(dialog.add(dialogInfo),function(err,result){
             if(err)return res.send(err)
@@ -117,8 +117,8 @@ router.post('/update',function(req,res,next){
                 checkStatus:userInfo.isAdmin==1?1:0,
                 checkResult:userInfo.isAdmin==1?'管理员直接修改':'用户修改',
                 time:new Date(),
-                old_obj:JSON.stringify(old_obj),
-                new_obj:JSON.stringify(ownerInfo),
+                old_obj:encodeURIComponent(JSON.stringify(old_obj)),
+                new_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
             }
             db.query(dialog.add(dialogInfo),function(err,result){
                 if(err)return res.send(err)
@@ -164,7 +164,7 @@ router.post('/delete',function(req,res,next){
             checkStatus:1,
             checkResult:userInfo.isAdmin==1?'管理员直接删除':'用户删除',
             time:new Date(),
-            old_obj:JSON.stringify(ownerInfo),
+            old_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
             new_obj:'',
         }
         db.query(dialog.add(dialogInfo),function(err,result){
