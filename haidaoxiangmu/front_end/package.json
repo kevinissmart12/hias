@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@turf/turf": "^6.5.0",
+    "@wangeditor/editor-for-vue": "^1.0.2",
     "axios": "^1.2.0",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.12",
