@@ -56,6 +56,7 @@
                     <el-select v-model="form.checkStatus" placeholder="请选择">
                         <el-option label="审核中" value="0"></el-option>
                         <el-option label="已通过" value="1"></el-option>
+                        <el-option label="未通过" value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
@@ -109,6 +110,7 @@ export default {
     methods:{
         search(){
             let data=this.qs.stringify(this.form)
+            console.log(data);
             this.$axios({
                 url:'/api/owner/search',
                 method:"POST",

@@ -14,9 +14,7 @@
                         <div class="title">
                             <span class="text" @click="goReply(item.id)">{{item.title}}</span>
                         </div> 
-                        <div class="content">
-                            {{item.content}}
-                        </div>
+                        <div class="content" v-html="item.content"></div>
                     </div>
                     <div class="right">
                         <div class="time">{{item.time}}</div>
@@ -33,7 +31,9 @@
                             </template>
                         </el-popover>
 
-                        <div class="delete" @click="deleteDiscussion(item.id)">删除</div>
+                        <div class="delete" @click="deleteDiscussion(item.id)" v-if="Uid==item.user.id||IsAdmin==1">删除</div>
+                        <div class="update" @click="updateDiscussion(item.id)" v-if="Uid==item.user.id||IsAdmin==1">修改</div>
+
                     </div>
                 </div>
                 
@@ -62,7 +62,6 @@ export default {
     data(){
         return{
             discussionList:[],
-
         }
     },
     methods:{
@@ -95,10 +94,9 @@ export default {
 
         },
         goReply(id){
-            
             //传递did和是否显示回复
             this.$store.commit('discussion/setDid',id)
-            this.$store.commit('discussion/setShowReply',true)
+            this.$store.commit('discussion/setShowReply',2)
 
         },
         getUid(){
@@ -134,6 +132,8 @@ export default {
 
                     if(res.data.status==200){
                         this.$message.success('删除成功');
+                        this.$store.commit('discussion/deleteDiscussion',id)
+                        
                     }
                 })
             }).catch(()=>{
@@ -144,6 +144,20 @@ export default {
             })
 
         },
+        updateDiscussion(id){
+            this.$store.commit('discussion/setDialogVisible',true)
+            this.$store.commit('discussion/setShowReply',1)
+            //获取内容
+            this.Discussion.map((item)=>{
+                if(item.id==id){
+                    this.$store.commit('discussion/setTitle',item.title)
+                    this.$store.commit('discussion/setContent',item.content)
+                    this.$store.commit('discussion/setUpdateId',id)
+
+                }
+            })
+
+        }
 
     },
     created(){
@@ -165,6 +179,12 @@ export default {
         DPageSize(){
             return this.$store.state.discussion.DPageSize
         },
+        Uid(){
+            return this.$store.state.discussion.uid
+        },
+        IsAdmin(){
+            return this.$store.state.discussion.isAdmin
+        }
     },
     watch:{
         DiscussionLength(n,o){
@@ -264,7 +284,17 @@ export default {
             color:rgb(214, 91, 54);
             cursor: pointer;
         }
+        .update{
+            position:absolute;
+            right:0px;
+            top:20px;
+            color:rgb(38, 98, 167);
+            cursor: pointer;
+        }
         .delete:hover{
+            text-decoration: underline;
+        }
+        .update:hover{
             text-decoration: underline;
         }
     }

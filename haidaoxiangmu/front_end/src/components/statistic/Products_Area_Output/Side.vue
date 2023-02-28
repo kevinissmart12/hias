@@ -141,8 +141,13 @@ export default {
                 data:data
             }).then(res=>{
                 console.log(res.data);
+                if(res.data.data.has==0){
+                    return this.$message.error('没有查询到数据')
+                }
                 if(res.data.status==200){
                     this.$store.commit('statistic/setProductsAO',res.data.data.data)
+                    this.$message.success('查询成功')
+
                 }
             })
         },

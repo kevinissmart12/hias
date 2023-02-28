@@ -15,6 +15,12 @@ const Ponds={
     },
     //获取所有池塘
     //无需字段
+    //checkstatus=1
+    getAllPass(){
+        const sql=`select * from aquaculture_ponds where checkStatus = 1`
+        return sql
+    },
+    //无checkstatus
     getAll(){
         const sql=`select * from aquaculture_ponds`
         return sql

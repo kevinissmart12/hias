@@ -275,6 +275,54 @@ router.get('/getAll',function(req,res,next){
     })
 })
 
+router.get('/getAllPass',function(req,res,next){
+
+    db.query(ponds.getAllPass(),function(err,result){
+        if(err)return res.send(err)
+
+        if(result.length==0)return res.send({status:400,data:{msg:"查询到0个池塘"}})
+        
+        let pondsData=result
+        //对当前所有池塘进行遍历，查找其owner和product，
+        //如果没有，则跳过
+        let ownerData=''
+        let productData=''
+        pondsData.forEach((i,v)=>{
+            if(i.ownerId){
+                // i.ownerId
+                db.query(owner.get(i.ownerId),function(err,result){
+                    if(err)return res.send(err)
+
+                    if(result.length==0)console.log({status:400,data:{msg:"查询到0个owner"}})
+
+                    ownerData=result[0]
+                    i.owner=ownerData
+                })
+            }
+            if(i.productId){
+                db.query(products.get(i.productId),function(err,result){
+                    if(err)return res.send(err)
+
+                    if(result.length==0)console.log({status:400,data:{msg:"查询到0个product"}})
+
+                    productData=result[0]
+                    i.product=productData
+                })
+            }
+        })
+        setTimeout(()=>{
+            res.send({
+                status:200,
+                data:{
+                    msg:'查找成功',
+                    data:pondsData,
+                }
+            })
+        },200)
+        
+    })
+})
+
 router.post('/search',function(req,res,next){
     const pondsInfo=req.body
 

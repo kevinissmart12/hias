@@ -6,7 +6,11 @@ export default {
         //discussion
         discussionList:[],
         discussionId:'',
-        showReply:false,
+        //0=>添加讨论
+        //1=>修改讨论
+        //2=>添加回复
+        //3=>修改回复
+        showReply:0,
 
         DCurrentPage:1,
         DPageSize:5,
@@ -25,6 +29,10 @@ export default {
 
         //diaglog
         dialogVisible:false,
+        //title content
+        title:'',
+        content:'',
+        updateId:'',
     },
     mutations:{
         setDiscussionList(state,data){
@@ -41,6 +49,10 @@ export default {
             }
             
             state.discussionList.push(data)
+        },
+        deleteDiscussion(state,id){
+            state.discussionList=state.discussionList.filter((item)=>item.id!=id)
+
         },
         setDid(state,id){
             state.discussionId=id
@@ -88,15 +100,12 @@ export default {
                     })
                 }
                 get(id)
-
+                
+                
                 setTimeout(()=>{
                     //删除arr中的id
                     arr.forEach((i,v)=>{
-                        state.replyList.forEach((subi,subv)=>{
-                            if(subi.id==i){
-                                state.replyList.splice(subv,1)
-                            }
-                        })
+                        state.replyList=state.replyList.filter((item)=>item.id!=i)
                     })
                 },100)
                 
@@ -140,6 +149,15 @@ export default {
         //dialog
         setDialogVisible(state,data){
             state.dialogVisible=data
+        },
+        setTitle(state,data){
+            state.title=data
+        },
+        setContent(state,data){
+            state.content=data
+        },
+        setUpdateId(state,data){
+            state.updateId=data
         }
     }
 

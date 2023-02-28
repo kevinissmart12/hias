@@ -1,12 +1,12 @@
 <template>
     <div class="index">
         <el-container>
-            <el-aside width="250px" style="padding:20px;">
-                <!-- <Control></Control> -->
+            <el-aside width="350px" style="padding:20px;">
+                <Control></Control>
             </el-aside>
             <el-main>
                 <!-- map -->
-                <!-- <Map></Map> -->
+                <Map></Map>
 
             </el-main>
         </el-container>
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import Map from '../components/ponds/Map.vue'
-import Control from '../components/ponds/Control.vue'
+import Map from '../components/ponds/AddPonds/AddMap_1.vue'
+import Control from '../components/ponds/AddPonds/AddControl_1.vue'
 export default {
     name:'Index',
     data(){

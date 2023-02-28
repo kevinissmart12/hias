@@ -196,7 +196,7 @@ export default {
                 village:'',
                 discriminator:'',
                 creditLevel:'',
-                checkStatus:'',
+                checkStatus:1,
             }
             
             let data=this.qs.stringify(searchForm)
@@ -239,7 +239,6 @@ export default {
         getProduct(){
             let searchForm={
                 name:this.form.product,
-
             }
             
             let data=this.qs.stringify(searchForm)
@@ -340,7 +339,7 @@ export default {
                     this.$store.commit('ponds/setId','')
                     this.$store.commit('ponds/changeNormalId',res.data.data.id)
                     this.$router.push({
-                        path:'/ponds/add',
+                        path:'/',
                         query:{
                             id:res.data.data.id
                         }
@@ -370,7 +369,7 @@ export default {
                     this.$message.success('更新成功');
 
                     this.$router.push({
-                        path:'/ponds/add',
+                        path:'/',
                         query:{
                             id:this.form.id
                         }

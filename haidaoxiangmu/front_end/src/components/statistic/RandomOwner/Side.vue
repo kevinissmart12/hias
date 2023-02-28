@@ -80,6 +80,14 @@ export default {
             }
         },
         randomSelect(n){
+            if(n==0){
+                this.form.n=''
+                return this.$message.error('最少需要一人')
+            }
+            if(n<0){
+                this.form.n=''
+                return this.$message.error('人数不能为负数')
+            }
             let data=this.qs.stringify({
                 n:n
             })
@@ -92,6 +100,8 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.$store.commit('statistic/setRandomOwner',res.data.data.data)
+                    this.$message.success('查询成功')
+
                 }
             })
         },

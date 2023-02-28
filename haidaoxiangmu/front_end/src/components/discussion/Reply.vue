@@ -18,29 +18,28 @@
                 <div class="username">
                     {{item.user.name}}
                 </div>
-                <div class="content">
-                    {{item.content}}
-                </div>
+                <div class="content" v-html="item.content"></div>
 
                 <!-- 回复的回复 -->
                 <div v-if="item.rid" class="reply-reply">
                     <div class="username">
                         回复给:{{item.fatherUser.name}}
                     </div>
-                    <div class="content">
-                        {{item.fatherReply.content}}
-                    </div>
+                    <div class="content" v-html="item.fatherReply.content"></div>
                     
                 </div>
 
                 <div class="time">
                     {{item.time}}
                 </div>
-                <span v-show="item.user.id==Uid||IsAdmin==1" class="delete-reply" @click='deleteReply(item.id)'>
+                <span v-if="item.user.id==Uid||IsAdmin==1" class="delete-reply" @click='deleteReply(item.id)'>
                     删除
                 </span>
                 <span class="send-reply" @click='sendReply(item.id)'>
                     回复
+                </span>
+                <span class="update-reply" @click='updateReply(item.id)'>
+                    修改
                 </span>
 
             </el-card>
@@ -102,14 +101,15 @@ export default {
             })
         },
         close(){
-            this.$store.commit('discussion/setShowReply',false)
+            this.$store.commit('discussion/setShowReply',0)
             this.$store.commit('discussion/setReplyList',[])
             this.$store.commit('discussion/setRCurrentPage',1)
         },
         sendReply(id){
             this.$store.commit('discussion/setDialogVisible',true)
             this.$store.commit('discussion/setRId',id)
-            
+            this.$store.commit('discussion/setShowReply',2)
+            this.$store.commit('discussion/setContent','')
         },
         deleteReply(id){
 
@@ -142,6 +142,19 @@ export default {
             })
 
 
+        },
+        updateReply(id){
+            this.$store.commit('discussion/setDialogVisible',true)
+            this.$store.commit('discussion/setShowReply',3)
+            //获取内容
+            this.ReplyList.map((item)=>{
+                if(item.id==id){
+                    // this.$store.commit('discussion/setTitle',item.title)
+                    this.$store.commit('discussion/setContent',item.content)
+                    this.$store.commit('discussion/setUpdateId',id)
+
+                }
+            })
         },
         handleSizeChange (size) {
 
@@ -235,22 +248,32 @@ export default {
     }
     .send-reply{
         position:absolute;
-        right:10px;
+        right:50px;
         bottom:5px;
         color:rgb(63, 81, 195);
         cursor: pointer;
     }
     .delete-reply{
         position:absolute;
-        right:50px;
+        right:90px;
         bottom:5px;
         color:rgb(214, 91, 54);
+        cursor: pointer;
+    }
+    .update-reply{
+        position:absolute;
+        right:10px;
+        bottom:5px;
+        color:rgb(63, 81, 195);
         cursor: pointer;
     }
     .send-reply:hover{
         text-decoration: underline;
     }
     .delete-reply:hover{
+        text-decoration: underline;
+    }
+    .update-reply:hover{
         text-decoration: underline;
     }
     .reply-reply{

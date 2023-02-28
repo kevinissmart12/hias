@@ -19,7 +19,10 @@ const Products={
         const sql=`select * from aquaculture_products`
         return sql
     },
-
+    getAllPass(){
+        const sql=`select * from aquaculture_products where checkStatus = 1`
+        return sql
+    },
     //更新水产信息
     //需要字段id,name,type,description,imgUrl,breedTech,diseases
     update(option){
@@ -42,7 +45,7 @@ const Products={
 
     //根据product的名字搜索
     search(option){
-        const sql=`select * from aquaculture_products where name like '%${option.name}%' `
+        const sql=`select * from aquaculture_products where name like '%${option.name}%' and checkStatus like 1`
         return sql
     }
 

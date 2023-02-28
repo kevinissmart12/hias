@@ -23,7 +23,7 @@ const Products={
     //更新回复信息
     //需要字段content,time,uid,did,rid
     update(option){
-        const sql=`update reply set content='${option.content}',time='${option.time}',uid='${option.uid}',did='${option.did}',rid='${option.rid}' where id=('${option.id}')`
+        const sql=`update reply set content='${option.content}',time='${option.time}',did='${option.did}',rid='${option.rid}' where id=('${option.id}')`
         return sql
     },
 

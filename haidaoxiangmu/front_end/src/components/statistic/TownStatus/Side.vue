@@ -107,6 +107,8 @@ export default {
                 if(res.data.status==200){
                     this.$store.commit('statistic/setTownStatus',res.data.data.data)
                     this.$store.commit('statistic/setTableHead',this.form)
+                    this.$message.success('查询成功')
+
                 }
             })
         },

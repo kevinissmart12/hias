@@ -132,6 +132,22 @@ router.get('/getAll', function (req, res, next) {
         })
     })
 })
+router.get('/getAllPass', function (req, res, next) {
+
+    db.query(products.getAllPass(),function(err,result){
+        if(err)return res.send(err)
+
+        if(result.length==0)return res.send({status:400,data:{msg:'查询到0个水产'}})
+
+        res.send({
+            status:200,
+            data:{
+                msg:'查询成功',
+                data:result
+            }
+        })
+    })
+})
 
 
 //修改水产信息

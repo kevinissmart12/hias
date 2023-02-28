@@ -39,7 +39,7 @@
             ></bm-polygon>
             
             <bm-marker v-if="drawingMarker" :position='drawingMarker' ></bm-marker>
-            <bm-polygon 
+            <bm-polygon
                 :path="path" 
                 v-for="path,index of drawingPolygon.paths"
                 :key="index+10000"
@@ -97,7 +97,7 @@ export default {
         //获取池塘
         getPonds(){
             this.$axios({
-                url:'/api/ponds/getAll',
+                url:'/api/ponds/getAllPass',
                 methods:'GET'
             }).then(res=>{
                 if(res.data.status==200){
@@ -455,7 +455,7 @@ export default {
                 this.show=false
                 setTimeout(()=>{
                     this.$store.commit('ponds/setEditing',{id:this.id,editing:true})
-                },300)
+                },100)
                 this.$store.commit('ponds/ResetDrawingPolygon')
                 
             }else{
@@ -488,6 +488,10 @@ export default {
         this.$store.commit('ponds/setEditPond',false)
         this.$store.commit('ponds/setClickFn',false)
         this.$store.commit('ponds/clearDrawinfPolygon')
+        this.$store.commit('ponds/clearPolygons')
+        this.$store.commit('ponds/clearAllPonds')
+
+
 
 
     },

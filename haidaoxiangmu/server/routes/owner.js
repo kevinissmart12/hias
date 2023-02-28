@@ -253,6 +253,22 @@ router.get('/getAll',function(req,res,next){
         })
     })
 })
+router.get('/getAllPass',function(req,res,next){
+
+    db.query(owner.getAllPass(),function(err,result){
+        if(err)return res.send(err)
+
+        if(result.length==0)return res.send({status:400,data:{msg:"查询到0个拥有者"}})
+        
+        res.send({
+            status:200,
+            data:{
+                msg:'查找成功',
+                data:result
+            }
+        })
+    })
+})
 
 //模糊搜索
 //条件有town,village,discriminator,name,checkStatus

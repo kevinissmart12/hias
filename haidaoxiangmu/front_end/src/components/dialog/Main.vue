@@ -39,7 +39,7 @@
             width="75%"
         >
             <!-- product -->
-            <div v-if="CheckingData.op_obj==2">CD 
+            <div v-if="CheckingData.op_obj==2"> 
                 <table border="1" style="width:100%"  align="center">
                     <tr>
                         <td width="100px" height="50px"></td>
@@ -468,8 +468,8 @@
             </el-table> -->
 
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="pass()">通  过</el-button>
-                <el-button type="danger" @click="deny()">不通过</el-button>
+                <el-button v-if="CheckingData.checkStatus=='未通过'||CheckingData.checkStatus=='未审核'" type="primary" @click="pass()">通  过</el-button>
+                <el-button v-if="CheckingData.checkStatus=='已通过'||CheckingData.checkStatus=='未审核'" type="danger" @click="deny()">不通过</el-button>
             </span>
         </el-dialog>
     </div>
@@ -573,6 +573,7 @@ export default {
             })
         },
         search(){
+            
             let data=this.qs.stringify({
                 uid: this.Form.uid,
                 username:this.Form.username,
@@ -592,6 +593,8 @@ export default {
                     this.$store.commit('dialog/setTableData',res.data.data.data)
                     this.length=res.data.data.slength
                     // this.$store.commit('dialog/setSearch',false)
+                    this.$store.commit('dialog/setForm',{...this.Form,search:'None'})
+
 
                 }
             })
@@ -675,6 +678,7 @@ export default {
         handleCurrentChange (currentPage) {
             this.$store.commit('dialog/setCurrentPage',currentPage)
             if(this.Search){
+                            
                 this.search()
             }else{
                 this.getDialog()                
@@ -794,7 +798,7 @@ export default {
                 if(res.data.status==200){
                     this.dialogVisible=false
                     this.$message.success('已通过');
-                    this.tempTableData.forEach((i,v)=>{
+                    this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
                             i.checkStatus='已通过'
                         }
@@ -819,7 +823,7 @@ export default {
                 if(res.data.status==200){
                     this.dialogVisible=false
                     this.$message.success('未通过');
-                    this.tempTableData.forEach((i,v)=>{
+                    this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
                             i.checkStatus='未通过'
                         }
@@ -876,13 +880,10 @@ export default {
                 this.getDialog()
             }
         },
-        Form:{
-            handler(n){
-                if(n){
-                    this.search()
-                }
-            },
-            deep:true,
+        Form(n){
+            if(n.search=='None')return
+            this.search()
+            
         }
     }
 }   

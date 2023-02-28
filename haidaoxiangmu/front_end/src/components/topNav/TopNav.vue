@@ -30,6 +30,10 @@
             
 
         </el-menu>
+
+        <div class="info">
+            <div class="name">你好，{{userInfo.name}}</div>
+        </div>
     </div>
 </template>
 
@@ -41,13 +45,8 @@ export default {
             activeIndex2: '1',
             menu:[
                 {'id':'1',content:'主页',isAdmin:0,url:'/'},
-                {'id':'2',content:'养殖池塘管理',isAdmin:0,children:[
-                    {'id':'2-1',content:'养殖池塘列表',isAdmin:0,url:'/ponds/all'},
-                    {'id':'2-2',content:'添加/编辑养殖池塘',isAdmin:0,url:'/ponds/add'},
-                ]},
-                {'id':'3',content:'养殖户管理',isAdmin:0,children:[
-                    {'id':'3-1',content:'查看所有养殖户信息',isAdmin:0,url:'/owner/all'},
-                ]},
+                {'id':'2',content:'养殖池塘列表',isAdmin:0,url:'/ponds/all'},
+                {'id':'3',content:'养殖户管理',isAdmin:0,url:'/owner/all'},
                 {'id':'4',content:'养殖品种管理',isAdmin:0,children:[
                     {'id':'4-1',content:'全部养殖品种列表',isAdmin:0,url:'/products/all'},
                     {'id':'4-2',content:'添加/编辑养殖品种',isAdmin:0,url:'/products/add'},
@@ -60,9 +59,8 @@ export default {
                 ]},
                 {'id':'6',content:'账户管理',isAdmin:0,url:'/account'},
                 {'id':'7',content:'日志&审核',isAdmin:1,url:'/dialog'},
-                {'id':'8',content:'信息交流',isAdmin:0,children:[
-                    {'id':'8-1',content:'查看讨论',isAdmin:0,url:'/discussion'},
-                ]},
+                {'id':'8',content:'信息交流',isAdmin:0,url:'/discussion'},
+                {'id':'9',content:'退出登录',isAdmin:0,url:'/login'},
 
             ],
             userInfo:{}
@@ -74,6 +72,9 @@ export default {
             if(keyPath.length==1){
                 //没有子项的
                 console.log(this.menu[key-1].url);
+                if(this.menu[key-1].url=='/login'){
+                    localStorage.removeItem('jwtToken')
+                }
                 this.$router.push(this.menu[key-1].url)
             }else{
                 console.log(this.menu[keyPath[0]-1].children[key.slice(-1)-1].url);
@@ -103,7 +104,8 @@ export default {
 
 <style lang="less" scoped>
     .el-menu{
-        
+        position:relative;
+        min-width: 900px;
         .menuItem{
             float:left;
 
@@ -111,5 +113,22 @@ export default {
     }
     ::v-deep .el-submenu__icon-arrow{
         right:5px!important;
+    }
+
+    .info{
+        
+        position:absolute;
+        top:0;
+        right:20px;
+        width: 200px;
+        height: 56px;
+        background-color: rgb(84, 92, 100);
+        .name{
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            line-height: 56px;
+        }
+
     }
 </style>

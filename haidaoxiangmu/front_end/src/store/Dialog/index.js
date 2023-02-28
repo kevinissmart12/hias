@@ -45,6 +45,7 @@ export default {
         setForm(state,data){
             state.form=data
         },
+        
 
         setTableData(state,data){
             data.forEach((i,v)=>{
@@ -120,10 +121,12 @@ export default {
             let obj={
                 //改id用于修改dialog表的checkStatus
                 id:data.id,
-                //用于表示应该区哪个表，修改checkStatus
+                //用于表示应该去哪个表，修改checkStatus
                 op_obj:data.op_obj,
                 //用于表示应该被修改的那个表的id
-                op_obj_id:''
+                op_obj_id:'',
+                //当前的checkStatus
+                checkStatus:data.checkStatus
             }
             if(obj.op_obj=='池塘信息'){
                 obj.op_obj=0

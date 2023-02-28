@@ -237,7 +237,7 @@ export default {
     data(){
         return{
             currentPage:1,
-            pagesize:5,
+            pagesize:10,
             tempTableData:[],
             // 手风琴激活
             activeName:'1',

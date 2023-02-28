@@ -20,7 +20,7 @@
                     label="操作"
                     width="120">
                     <template slot-scope="scope">
-                        <el-button @click="check(scope.row)" type="text" size="small">去查看</el-button>
+                        <el-button v-if="scope.row.checkStatus=='已通过'" @click="check(scope.row)" type="text" size="small">去查看</el-button>
                         <el-button @click="deleteSelect(scope.row)" style="color:red" type="text" size="small">删除</el-button>
                     </template>
                 </el-table-column>
@@ -62,7 +62,7 @@ export default {
             ],
             tempTableData:[],
             currentPage:1,
-            pagesize:5,
+            pagesize:10,
         }
     },
     methods:{
@@ -132,7 +132,7 @@ export default {
         },
         check(item){
             this.$router.push({
-                path:'/ponds/add',
+                path:'/',
                 query:{
                     id:item.id,
                 }
@@ -171,7 +171,7 @@ export default {
         },
         add(){
             this.$router.push({
-                path:'/ponds/add',
+                path:'/',
             })
         },
         tableRowClassName({row, rowIndex}) {

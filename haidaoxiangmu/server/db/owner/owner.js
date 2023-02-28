@@ -15,6 +15,10 @@ const Ponds={
     },
     //获取所有池塘
     //无需字段
+    getAllPass(){
+        const sql=`select * from owner where checkStatus = 1`
+        return sql
+    },
     getAll(){
         const sql=`select * from owner`
         return sql

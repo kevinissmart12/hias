@@ -7,11 +7,11 @@
             <el-main>
 
                 <transition name="el-fade-in-linear">
-                    <Main v-if="ShowReply==false"></Main>
+                    <Main v-if="ShowReply==0||ShowReply==1"></Main>
                 </transition>
 
                 <transition name="el-fade-in-linear">
-                    <Reply v-if="ShowReply"></Reply>
+                    <Reply v-if="ShowReply==2||ShowReply==3"></Reply>
                 </transition>
 
             </el-main>

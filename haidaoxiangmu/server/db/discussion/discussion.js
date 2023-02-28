@@ -23,7 +23,7 @@ const Products={
     //更新讨论
     //需要字段 title,content,time,uid
     update(option){
-        const sql=`update discussion set title='${option.title}',content='${option.content}',time='${option.time}',uid='${option.uid}' where id=('${option.id}')`
+        const sql=`update discussion set title='${option.title}',content='${option.content}',time='${option.time}'where id=('${option.id}')`
         return sql
     },
 

@@ -160,7 +160,7 @@ router.post('/deny',function(req,res,next){
 
 router.post('/search',function(req,res,next){
     const dialogInfo=req.body
-
+    console.log(dialogInfo);
     db.query(dialog.search(dialogInfo),function(err,result){
         if(err)return res.send(err)
 

@@ -13,6 +13,7 @@ var user = require('../db/user/user')
 //需要token
 router.post('/add',function(req,res,next){
     const discussionInfo= req.body
+    // discussionInfo.content=encodeURIComponent(JSON.stringify(discussionInfo.content))
 
     db.query(discussion.add(discussionInfo),function(err,result){
         if(err)return res.send(err)
@@ -36,7 +37,8 @@ router.post('/add',function(req,res,next){
 //需要token
 router.post('/update',function(req,res,next){
     const discussionInfo= req.body
-
+    // discussionInfo.content=encodeURIComponent(JSON.stringify(discussionInfo.content))
+    console.log(discussionInfo);
     db.query(discussion.update(discussionInfo),function(err,result){
         if(err)return res.send(err)
 

@@ -124,6 +124,9 @@ export default {
             }
 
         },
+        clearPolygons(state){
+            state.polygons=[]
+        },
         //以下两个方法用于设置所有owners和products
         setOwners(state,data){
             state.owners=data
@@ -189,15 +192,17 @@ export default {
             //查看polygons的最后一个id是否为65535
             if(state.polygons[state.polygons.length-1].id==object.id){
                 //更新
+                // console.log('修改成功');
                 state.polygons[state.polygons.length-1]=object
             }else{
                 //新增
+                // console.log('添加成功');
                 state.polygons.push(object)
             }
         },
         //非新增的池塘信息修改
         oldPolygon(state){
-
+            
             state.polygons.forEach((i,v)=>{
                 
                 if(i.id==state.id){
@@ -549,6 +554,9 @@ export default {
                 state.allPonds=data
             },100)
             
+        },
+        clearAllPonds(state){
+            state.allPonds=[]
         },
         //把特定的一行提到第一行
         changeToFirst(state,id){
