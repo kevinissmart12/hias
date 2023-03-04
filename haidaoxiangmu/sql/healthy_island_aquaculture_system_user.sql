@@ -1,0 +1,60 @@
+CREATE DATABASE  IF NOT EXISTS `healthy_island_aquaculture_system` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `healthy_island_aquaculture_system`;
+-- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: healthy_island_aquaculture_system
+-- ------------------------------------------------------
+-- Server version	5.7.36-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `mobile` varchar(255) DEFAULT NULL,
+  `birthday` varchar(255) DEFAULT NULL,
+  `sex` varchar(255) DEFAULT NULL,
+  `department` varchar(255) DEFAULT NULL,
+  `imgUrl` varchar(255) DEFAULT NULL,
+  `isAdmin` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'admin','$2a$10$lNMaV5b71sojUOAOdZ6e3.7xzuD2RfaJkP6dZx0uqi5VL7J5bSDTG','123456789','2022-12-26T16:00:00.000Z','男','1111','http://localhost:3000/user/1670321035291eyJhbGciOi139075.jpg','1'),(2,'user0010012546','$2a$10$gODj0FnUpU3dHettDOXLeeSIATe9hH53bDyr94nWk2gG.PjLU/Lyq','15867614649','2022-12-19T16:00:00.000Z','男','111222333','http://localhost:3000/user/1670321581541eyJhbGciOi174726.jpeg','0'),(3,'user002','$2a$10$gODj0FnUpU3dHettDOXLeeSIATe9hH53bDyr94nWk2gG.PjLU/Lyq','18858792379',NULL,NULL,NULL,NULL,'0'),(4,'user003','$2a$10$LPSuyr1V20QKBirmjGlqsebiFPwXOykHlQP4pDBw7J5/olD1qeWcW','13282656568','2023-02-20T16:00:00.000Z','男','','','0'),(6,'user004','$2a$10$0RxuYmwtfmw0q6Wp7AIL8ummwhFFJfZf7VHt4xwz2wpmtVsrs66x2','13058792379',NULL,NULL,NULL,NULL,'0'),(7,'user005','$2a$10$K9sD29a3YiL/IbB3mcC5p.wGYPQGOdi82bOze0./bFEMJVYYA6wIW','',NULL,NULL,NULL,NULL,'0'),(8,'user006','$2a$10$KZMVbFawodYMWpHt7MOTSeM0sH1Uvvq2zRhxrcf/X4ePm4g7RqWTC','',NULL,NULL,NULL,NULL,'0'),(9,'user007','$2a$10$PxpuK7YBK6TxhsV2uwRrTO3yPsiaK8KJxrnCP.7j9kQwvDuLH7DpO',NULL,NULL,NULL,NULL,NULL,'0'),(10,'user008','$2a$10$2/BjzthslxKUWhYzv.cvGu4jgMIrmNklrtG3JXgy3HakEacCOrjUi',NULL,NULL,NULL,NULL,NULL,'0'),(11,'user009','$2a$10$IBmBIn3aTiy/Pf.ztLfJ7.OWN1ik9SLO25tH22kUH/aJu4yX5Ww9a',NULL,NULL,NULL,NULL,NULL,'0'),(12,'admin1','$2a$10$n87iYcC2H9DOu85MSJO4WODz4q3WVWHwrhKcnOnApUBPlBAWiHXbi',NULL,NULL,NULL,NULL,NULL,'1');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-03-04 16:31:06
