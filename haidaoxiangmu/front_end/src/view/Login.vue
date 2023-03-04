@@ -74,6 +74,7 @@ export default {
                     localStorage.setItem('jwtToken',res.data.data.token)
                     this.$router.push('/')
                     this.$message.success(res.data.data.msg);
+                    localStorage.setItem('tokenNumber',0)
                 }
                 
             })

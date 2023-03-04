@@ -39,11 +39,18 @@ axios.interceptors.request.use(config=>{
 axios.interceptors.response.use(response=>{
     endLoading()
     if(response.data.status==401){
-        Message.error('token失效，请重新登录')
+        let tokenNumber=localStorage.getItem('tokenNumber')
+        if(tokenNumber==0){
+            Message.error('token失效，请重新登录')
         
-        localStorage.removeItem('jwtToken')
-        //跳转登录
-        router.push('/login')
+            localStorage.removeItem('jwtToken')
+            //跳转登录
+            router.push('/login')
+            localStorage.setItem('tokenNumber',1)
+        }else{
+            return
+        }
+        
     }else if(response.data.status!==200){
         return Message.error(response.data.data.msg);
     }

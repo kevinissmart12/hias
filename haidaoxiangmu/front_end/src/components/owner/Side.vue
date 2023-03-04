@@ -3,6 +3,17 @@
         <el-card class="side-card" style="padding:0;">
             <div slot="header" class="clearfix">
                 <span>养殖人员查询</span>
+                <download-excel
+                    class="export-excel-wrapper"
+                    :data="json_data"
+                    :fields="json_fields"
+                    type="xls"
+                    worksheet="My Worksheet"
+                    name="池塘信息列表"
+                    style="float: right; padding: 3px 0"
+                >
+                    <el-button @click="exportExcel" style="float: right; padding: 3px 0" type="text">导出筛选列表</el-button>
+                </download-excel>
             </div>
 
             <el-form label-position="left" ref="form" :model="form" label-width="80px">
@@ -105,6 +116,35 @@ export default {
             ],
             townOption:[],
             villageOption:[],
+            json_fields:{
+                名称:"name",
+                联系电话:"mobile",
+                出生年月:"birthday",
+                图片:"imgUrl",
+                性别:"sex",
+                家庭住址:"address",
+                出生年月:"birthday",
+                所在区:"countyContent",
+                所在镇:"townContent",
+                所在村:"villageContent",
+                从业时间:"engagedTime",
+                文化程度:"educationLevel",
+                农民头衔:"farmerTitle",
+                组织机构代码:"departmentId",
+                类型:"discriminator",
+                公司:"companyName",
+                成立时间:"establishedTime",
+                固定资产:"fixedAssets",
+                经营内容:"businessContents",
+                无公害基地:"isBaseOfEmployee",
+                员工人数:"numberOfEmployee",
+                特色产品:"featuredProducts",
+                信用等级:"creditLevel",
+                审核状态:"checkStatus",
+            },
+            json_data:[
+
+            ],
         }   
     },
     methods:{
@@ -206,6 +246,14 @@ export default {
                     }
                 })
             }
+        },
+        exportExcel(){
+            this.json_data=this.AllOwner
+        }
+    },
+    computed:{
+        AllOwner(){
+            return this.$store.state.allOwner.tableData
         },
     },
     watch:{

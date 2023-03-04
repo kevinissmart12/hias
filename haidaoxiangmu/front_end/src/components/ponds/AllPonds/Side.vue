@@ -3,6 +3,17 @@
         <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span>池塘查询</span>
+            <download-excel
+                    class="export-excel-wrapper"
+                    :data="json_data"
+                    :fields="json_fields"
+                    type="xls"
+                    worksheet="My Worksheet"
+                    name="池塘信息列表"
+                    style="float: right; padding: 3px 0"
+                >
+                    <el-button @click="exportExcel" style="float: right; padding: 3px 0" type="text">导出筛选列表</el-button>
+            </download-excel>
         </div>
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="养殖人员">
@@ -108,6 +119,22 @@ export default {
             ],
             townOption:[],
             villageOption:[],
+            json_fields:{
+                区块编号:"number",
+                拥有者:"owner",
+                养殖品种:"product",
+                年产量:"productOutput",
+                所在区:"countyContent",
+                所在镇:"townContent",
+                所在村:"villageContent",
+                面积:"area",
+                经度:"lng",
+                纬度:"lat",
+                审核状态:"checkStatus",
+            },
+            json_data:[
+
+            ],
         }
     },
     methods:{
@@ -265,6 +292,10 @@ export default {
             this.form.product=''
             this.form.productId=''
         },
+
+        exportExcel(){
+            this.json_data=this.AllPonds
+        }
     },
     watch:{
         'form.county'(n,o){
@@ -300,6 +331,9 @@ export default {
         },
         Products(){
             return this.$store.state.ponds.products
+        },
+        AllPonds(){
+            return this.$store.state.ponds.allPonds
         },
     }
 }

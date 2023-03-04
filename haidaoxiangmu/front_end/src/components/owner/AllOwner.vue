@@ -70,7 +70,7 @@
         >
 
             <!-- form -->
-            <el-form label-position="left" :inline="true" ref="form" :model="form" label-width="100px">
+            <el-form label-position="left" :inline="true" :rules="rules" ref="form" :model="form" label-width="120px">
                                 
                 <el-collapse v-model="activeName" accordion>
 
@@ -84,16 +84,16 @@
                     </el-collapse-item>
 
                     <el-collapse-item v-if="form.discriminator" title="个人信息" name="1">
-                        <el-form-item label="名称/法人" >
+                        <el-form-item label="名称/法人" prop="name">
                             <el-input class="short" v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item :label="form.discriminator=='个人'?'手机号码':'联系电话'">
+                        <el-form-item :label="form.discriminator=='个人'?'手机号码':'联系电话'" prop="mobile">
                             <el-input class="short" v-model="form.mobile"></el-input>
                         </el-form-item>
-                        <el-form-item label="家庭住址">
+                        <el-form-item label="家庭住址" prop="address">
                             <el-input class="short" v-model="form.address"></el-input>
                         </el-form-item>
-                        <el-form-item label="所在区">
+                        <el-form-item label="所在区" prop="county">
                             <el-select class="short" v-model="form.county" placeholder="请选择所在区/县">
                                 <el-option
                                     v-for="item in countyOption"
@@ -103,7 +103,7 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="所在镇" >
+                        <el-form-item label="所在镇" prop="town">
                             <el-select class="short" v-model="form.town" placeholder="请选择所在镇" :disabled='form.county==""?true:false'>
                                 <el-option
                                     v-for="item in townOption"
@@ -113,7 +113,7 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="所在村">
+                        <el-form-item label="所在村" prop="village">
                             <el-select class="short" v-model="form.village" placeholder="请选择所在村" :disabled='form.county==""||form.town==""?true:false'>
                                 <el-option
                                     v-for="item in villageOption"
@@ -124,7 +124,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="出生年月">
+                        <el-form-item label="出生年月" prop="birthday">
                             <el-date-picker
                                 class="short"
                                 v-model="form.birthday"
@@ -133,14 +133,14 @@
                             </el-date-picker>
                         </el-form-item>
 
-                        <el-form-item label="性别">
+                        <el-form-item label="性别" prop="sex">
                             <el-radio-group class="short" v-model="form.sex">
                                 <el-radio label="男"></el-radio>
                                 <el-radio label="女"></el-radio>
                             </el-radio-group>
                         </el-form-item>
 
-                        <el-form-item label="文化程度">
+                        <el-form-item label="文化程度" prop="educationLevel">
                             <el-select v-model="form.educationLevel" placeholder="请选择" class="short">
                             <el-option label="小学" value="小学"></el-option>
                             <el-option label="初中" value="初中"></el-option>
@@ -151,23 +151,23 @@
                             </el-select>
                         </el-form-item>
                                         
-                        <el-form-item label="组织机构代码">
+                        <el-form-item label="组织机构代码" prop="departmentId">
                             <el-input class="short" v-model="form.departmentId"></el-input>
                         </el-form-item>
-                        <el-form-item label="从业时间">
+                        <el-form-item label="从业时间" prop="engagedTime">
                             <el-input class="short" v-model="form.engagedTime"></el-input>
                         </el-form-item>
-                        <el-form-item label="农民头衔">
+                        <el-form-item label="农民头衔" prop="farmerTitle">
                             <el-input class="short" v-model="form.farmerTitle"></el-input>
                         </el-form-item>
-                        <el-form-item label="信用等级">
+                        <el-form-item label="信用等级" prop="creditLevel">
                             <el-select v-model="form.creditLevel" placeholder="请选择" class="short">
                             <el-option label="A" value="A"></el-option>
                             <el-option label="B" value="B"></el-option>
                             <el-option label="C" value="C"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="图片">
+                        <el-form-item label="图片" >
                             <el-upload
                                 class="avatar-uploader"
                                 action="#"
@@ -185,10 +185,10 @@
 
                     <el-collapse-item v-if="form.discriminator=='企业'" title="企业信息" name="2">
                         <!-- 和企业有关的 -->
-                        <el-form-item v-if="form.discriminator=='企业'" label="公司">
+                        <el-form-item v-if="form.discriminator=='企业'" label="公司" prop="companyName">
                             <el-input class="short" v-model="form.companyName"></el-input>
                         </el-form-item>
-                        <el-form-item v-if="form.discriminator=='企业'" label="成立时间">
+                        <el-form-item v-if="form.discriminator=='企业'" label="成立时间" prop="establishedTime">
                             <el-date-picker
                                 class="short"
                                 v-model="form.establishedTime"
@@ -196,22 +196,22 @@
                                 placeholder="选择日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item v-if="form.discriminator=='企业'" label="固定资产">
+                        <el-form-item v-if="form.discriminator=='企业'" label="固定资产" prop="fixedAssets">
                             <el-input class="short" v-model="form.fixedAssets"></el-input>
                         </el-form-item>
-                        <el-form-item v-if="form.discriminator=='企业'" label="经营内容">
+                        <el-form-item v-if="form.discriminator=='企业'" label="经营内容" prop="businessContents">
                             <el-input class="short" v-model="form.businessContents"></el-input>
                         </el-form-item>
-                        <el-form-item v-if="form.discriminator=='企业'" label="无公害基地">
+                        <el-form-item v-if="form.discriminator=='企业'" label="无公害基地" prop="isBaseOfEmployee">
                             <el-select class="short" v-model="form.isBaseOfEmployee" placeholder="请选择">
                             <el-option label="是" value="1"></el-option>
                             <el-option label="否" value="0"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item v-if="form.discriminator=='企业'" label="员工人数">
+                        <el-form-item v-if="form.discriminator=='企业'" label="员工人数" prop="numberOfEmployee">
                             <el-input class="short" v-model="form.numberOfEmployee"></el-input>
                         </el-form-item>
-                        <el-form-item v-if="form.discriminator=='企业'" label="特色产品">
+                        <el-form-item v-if="form.discriminator=='企业'" label="特色产品" prop="featuredProducts">
                             <el-input class="short" v-model="form.featuredProducts"></el-input>
                         </el-form-item>
                     </el-collapse-item>
@@ -283,6 +283,65 @@ export default {
                 comment:'',
                 // checkStatus:'',
             },
+            rules: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'change' },
+                ],
+                mobile: [
+                    { required: true, message: '请输入手机', trigger: 'change' },
+                ],
+                birthday: [
+                    { required: true, message: '请选择出生日期', trigger: 'change' },
+                ],
+                sex: [
+                    { required: true, message: '请选择性别', trigger: 'change' },
+                ],
+                address: [
+                    { required: true, message: '请输入家庭地址', trigger: 'change' },
+                ],
+                county: [
+                    { required: true, message: '请选择所在区', trigger: 'change' },
+                ],
+                town: [
+                    { required: true, message: '请选择所在镇', trigger: 'change' },
+                ],
+                village: [
+                    { required: true, message: '请选择所在村', trigger: 'change' },
+                ],
+                engagedTime: [
+                    { required: true, message: '请输入从业时间', trigger: 'change' },
+                ],
+                farmerTitle: [
+                    { required: true, message: '请输入农民头衔', trigger: 'change' },
+                ],
+                departmentId: [
+                    { required: true, message: '请输入组织机构代码', trigger: 'change' },
+                ],
+                companyName: [
+                    { required: true, message: '请输入公司名', trigger: 'change' },
+                ],
+                establishedTime: [
+                    { required: true, message: '请选择成立时间', trigger: 'change' },
+                ],
+                fixedAssets: [
+                    { required: true, message: '请输入固定资产', trigger: 'change' },
+                ],
+                businessContents: [
+                    { required: true, message: '请输入经营内容', trigger: 'change' },
+                ],
+                isBaseOfEmployee: [
+                    { required: true, message: '请选择是否未无公害基地', trigger: 'change' },
+                ],
+                numberOfEmployee: [
+                    { required: true, message: '请输入员工人数', trigger: 'change' },
+                ],
+                featuredProducts: [
+                    { required: true, message: '请输入特色产品', trigger: 'change' },
+                ],
+                creditLevel: [
+                    { required: true, message: '请选择信用等级', trigger: 'change' },
+                ],
+            },
             formShow:false,
             imageName:'',
             checkOrAdd:'check',
@@ -352,6 +411,65 @@ export default {
             this.formShow=false
         },
         save(){
+            if(this.form.name==''){
+                return this.$message.error('请输入姓名')
+            }
+            if(this.form.mobile==''){
+                return this.$message.error('请输入手机')
+            }
+            if(this.form.birthday==''){
+                return this.$message.error('请选择出生日期')
+            }
+            if(this.form.sex==''){
+                return this.$message.error('请选择性别')
+            }
+            if(this.form.address==''){
+                return this.$message.error('请输入家庭地址')
+            }
+            if(this.form.county==''){
+                return this.$message.error('请选择所在区')
+            }
+            if(this.form.town==''){
+                return this.$message.error('请选择所在镇')
+            }
+            if(this.form.village==''){
+                return this.$message.error('请选择所在村')
+            }
+            if(this.form.engagedTime==''){
+                return this.$message.error('请输入从业时间')
+            }
+            if(this.form.farmerTitle==''){
+                return this.$message.error('请输入农民头衔')
+            }
+            if(this.form.departmentId==''){
+                return this.$message.error('请输入组织机构代码')
+            }
+            if(this.form.creditLevel==''){
+                return this.$message.error('请选择信用等级')
+            }
+            if(this.form.discriminator=='企业'){
+                if(this.form.companyName==''){
+                    return this.$message.error('请输入公司名')
+                }
+                if(this.form.establishedTime==''){
+                    return this.$message.error('请选择成立时间')
+                }
+                if(this.form.fixedAssets==''){
+                    return this.$message.error('请输入固定资产')
+                }
+                if(this.form.businessContents==''){
+                    return this.$message.error('请输入经营内容')
+                }
+                if(this.form.isBaseOfEmployee==''){
+                    return this.$message.error('请选择是否未无公害基地')
+                }
+                if(this.form.numberOfEmployee==''){
+                    return this.$message.error('请输入员工人数')
+                }
+                if(this.form.featuredProducts==''){
+                    return this.$message.error('请输入特色产品')
+                }
+            }
             // update
             let data=this.qs.stringify(this.form)
 
@@ -371,6 +489,68 @@ export default {
             })
         },
         add(){
+            if(this.form.name==''){
+                return this.$message.error('请输入姓名')
+            }
+            if(this.form.mobile==''){
+                return this.$message.error('请输入手机')
+            }
+            if(this.form.birthday==''){
+                return this.$message.error('请选择出生日期')
+            }
+            if(this.form.sex==''){
+                return this.$message.error('请选择性别')
+            }
+            if(this.form.address==''){
+                return this.$message.error('请输入家庭地址')
+            }
+            if(this.form.county==''){
+                return this.$message.error('请选择所在区')
+            }
+            if(this.form.town==''){
+                return this.$message.error('请选择所在镇')
+            }
+            if(this.form.village==''){
+                return this.$message.error('请选择所在村')
+            }
+            if(this.form.engagedTime==''){
+                return this.$message.error('请输入从业时间')
+            }
+            if(this.form.farmerTitle==''){
+                return this.$message.error('请输入农民头衔')
+            }
+            if(this.form.departmentId==''){
+                return this.$message.error('请输入组织机构代码')
+            }
+            if(this.form.creditLevel==''){
+                return this.$message.error('请选择信用等级')
+            }
+            if(this.form.discriminator=='企业'){
+                if(this.form.companyName==''){
+                    return this.$message.error('请输入公司名')
+                }
+                if(this.form.establishedTime==''){
+                    return this.$message.error('请选择成立时间')
+                }
+                if(this.form.fixedAssets==''){
+                    return this.$message.error('请输入固定资产')
+                }
+                if(this.form.businessContents==''){
+                    return this.$message.error('请输入经营内容')
+                }
+                if(this.form.isBaseOfEmployee==''){
+                    return this.$message.error('请选择是否未无公害基地')
+                }
+                if(this.form.numberOfEmployee==''){
+                    return this.$message.error('请输入员工人数')
+                }
+                if(this.form.featuredProducts==''){
+                    return this.$message.error('请输入特色产品')
+                }
+            }
+            
+            
+
             let data=this.qs.stringify(this.form)
 
             this.$axios({
@@ -630,9 +810,9 @@ export default {
     ::v-deep .el-textarea__inner{
         height: 66px!important;
     }
-    .el-form-item{
-        margin-bottom:5px!important;
-    }
+    // .el-form-item{
+    //     // margin-bottom:5px!important;
+    // }
 
     .el-upload {
         border: 1px dashed #d9d9d9;

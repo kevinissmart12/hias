@@ -16,8 +16,8 @@
             {{EditPond?'停止编辑':'编辑池塘'}}
         </el-button>
         <!-- 对该池塘添加owner和product,从数据库中选 -->
-        <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="海水/淡水">
+        <el-form ref="form" :model="form" :rules="rules"  label-width="100px">
+            <el-form-item label="海水/淡水" prop="pondsType">
                 <el-select v-model="form.pondsType" placeholder="请选择海水/淡水养殖" @change='updateForm(form.pondsType,"setPondsType")'>
                     <el-option
                         label="海水养殖"
@@ -31,10 +31,10 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="区块编号">
+            <el-form-item label="区块编号" prop="number">
                 <el-input v-model="form.number" @input='updateForm(form.number,"setNumber")'></el-input>
             </el-form-item>
-            <el-form-item label="所在区">
+            <el-form-item label="所在区" prop="county">
                 <el-select v-model="form.county" placeholder="请选择所在区/县">
                     <el-option
                         v-for="item in countyOption"
@@ -44,8 +44,8 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="所在镇" >
-                <el-select v-model="form.town" placeholder="请选择所在镇" >
+            <el-form-item label="所在镇" prop="town">
+                <el-select v-model="form.town" placeholder="请选择所在镇" :disabled='form.county==""?true:false'>
                     <el-option
                         v-for="item in townOption"
                         :key="item.id"
@@ -55,9 +55,9 @@
                 </el-select>
                 <!-- <el-input  v-model="form.town" @input='updateForm(form.town,"setTown")' placeholder="请输入所在镇"></el-input> -->
             </el-form-item>
-            <el-form-item label="所在村">
+            <el-form-item label="所在村" prop="village" >
                 <!-- :disabled='form.county==""||form.town==""?true:false' -->
-                <el-select v-model="form.village" placeholder="请选择所在村" >
+                <el-select v-model="form.village" placeholder="请选择所在村" :disabled='form.county==""||form.town==""?true:false'>
                     <el-option
                         v-for="item in villageOption"
                         :key="item.id"
@@ -68,7 +68,7 @@
                 <!-- <el-input  v-model="form.village" @input='updateForm(form.village,"setVillage")' placeholder="请输入所在村"></el-input> -->
             </el-form-item>
 
-            <el-form-item label="养殖人员">
+            <el-form-item label="养殖人员" prop="owner">
                 <el-select v-model="form.owner" @change="selectOwner" @clear="vanishOwner" filterable clearable placeholder="请选择">
                     <el-option
                         v-for="item in Owners"
@@ -78,7 +78,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="养殖品种">
+            <el-form-item label="养殖品种" prop="product">
                 <el-select v-model="form.product" @change="selectProduct" @clear="vanishProduct" filterable clearable placeholder="请选择">
                     <el-option
                         v-for="item in Products"
@@ -88,7 +88,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="经度">
+            <el-form-item label="经度" >
                 <el-input :disabled="true" v-model="form.lng"  placeholder="尚未创建池塘"></el-input>
             </el-form-item>
             <el-form-item label="纬度">
@@ -99,17 +99,17 @@
                     <template slot="append">亩</template>
                 </el-input>
             </el-form-item>
-            <el-form-item label="实际面积">
+            <el-form-item label="实际面积" prop="area">
                 <el-input v-model="form.area" @input='updateForm(form.area,"setArea")' placeholder="请输入面积">
                     <template slot="append">亩</template>
                 </el-input>
             </el-form-item>
-            <el-form-item label="年产量">
+            <el-form-item label="年产量" prop="productOutput">
                 <el-input v-model="form.productOutput" @input='updateForm(form.productOutput,"setProductOutput")' placeholder="请输入面积">
                     <template slot="append">斤</template>
                 </el-input>
             </el-form-item>
-            <el-form-item label="备注">
+            <el-form-item label="备注" prop="comment">
                 <el-input  v-model="form.comment" @input='updateForm(form.comment,"setComment")' placeholder="请输入备注"></el-input>
             </el-form-item>
             <el-form-item>
@@ -160,6 +160,35 @@ export default {
                 comment:'',
                 checkStatus:0,
                 id:'',
+            },
+            rules: {
+                pondsType: [
+                    { required: true, message: '请选择池塘类型', trigger: 'change' },
+                ],
+                number: [
+                    { required: true, message: '请输入区块编号', trigger: 'change' }
+                ],
+                county: [
+                    { required: true, message: '请选择所在区', trigger: 'change' },
+                ],
+                town: [
+                    { required: true, message: '请选择所在镇', trigger: 'change' },
+                ],
+                village: [
+                    { required: true, message: '请选择所在村', trigger: 'change' },
+                ],
+                owner: [
+                    { required: true, message: '请选择养殖人员', trigger: 'change' },
+                ],
+                product: [
+                    { required: true, message: '请选择养殖品种', trigger: 'change' },
+                ],
+                area: [
+                    { required: true, message: '请输入实际面积', trigger: 'change' },
+                ],
+                productOutput: [
+                    { required: true, message: '请输入年产量', trigger: 'change' },
+                ],
             },
             //所在区，不用存在于form中
             //1=>定海区，2=>普陀区,3=>岱山县,4=>嵊泗县
@@ -325,6 +354,33 @@ export default {
 
         //添加ponds
         addPonds(){
+            if(this.form.pondsType==''){
+                return this.$message.error('请选择池塘类型')
+            }
+            if(this.form.number==''){
+                return this.$message.error('请输入区块编号')
+            }
+            if(this.form.county==''){
+                return this.$message.error('请选择所在区')
+            }
+            if(this.form.town==''){
+                return this.$message.error('请选择所在镇')
+            }
+            if(this.form.village==''){
+                return this.$message.error('请选择所在村')
+            }
+            if(this.form.owner==''){
+                return this.$message.error('请选择养殖人员')
+            }
+            if(this.form.product==''){
+                return this.$message.error('请选择养殖品种')
+            }
+            if(this.form.area==''){
+                return this.$message.error('请输入养殖面积')
+            }
+            if(this.form.productOutput==''){
+                return this.$message.error('请输入年产量')
+            }
             this.form.polygon=this.DrawingPolygon
             let data=this.qs.stringify(this.form)
 
@@ -357,6 +413,34 @@ export default {
             this.form.id=this.Id
             this.form.polygon=this.DrawingPolygon
             if(this.form.id=='')return this.$message.error('没选择池塘');
+            if(this.form.pondsType==''){
+                return this.$message.error('请选择池塘类型')
+            }
+            if(this.form.number==''){
+                return this.$message.error('请输入区块编号')
+            }
+            if(this.form.county==''){
+                return this.$message.error('请选择所在区')
+            }
+            if(this.form.town==''){
+                return this.$message.error('请选择所在镇')
+            }
+            if(this.form.village==''){
+                return this.$message.error('请选择所在村')
+            }
+            if(this.form.owner==''){
+                return this.$message.error('请选择养殖人员')
+            }
+            if(this.form.product==''){
+                return this.$message.error('请选择养殖品种')
+            }
+            if(this.form.area==''){
+                return this.$message.error('请输入养殖面积')
+            }
+            if(this.form.productOutput==''){
+                return this.$message.error('请输入年产量')
+            }
+
             
             let data=this.qs.stringify(this.form)
 
@@ -379,6 +463,36 @@ export default {
                     this.$router.go(0);
                 }
             })
+        },
+
+        validate(){
+            if(this.form.pondsType==''){
+                return this.$message.error('请选择池塘类型')
+            }
+            if(this.form.number==''){
+                return this.$message.error('请输入区块编号')
+            }
+            if(this.form.county==''){
+                return this.$message.error('请选择所在区')
+            }
+            if(this.form.town==''){
+                return this.$message.error('请选择所在镇')
+            }
+            if(this.form.village==''){
+                return this.$message.error('请选择所在村')
+            }
+            if(this.form.owner==''){
+                return this.$message.error('请选择养殖人员')
+            }
+            if(this.form.product==''){
+                return this.$message.error('请选择养殖品种')
+            }
+            if(this.form.area==''){
+                return this.$message.error('请输入养殖面积')
+            }
+            if(this.form.productOutput==''){
+                return this.$message.error('请输入年产量')
+            }
         },
 
 
