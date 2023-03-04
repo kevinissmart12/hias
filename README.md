@@ -7,4 +7,8 @@ npm run serve
 ```
 npm run start
 ```
-此项目包含前后端，尚未上传数据库
+数据库为mysql
+管理员账号
+账号：admin
+密码：111111
+
