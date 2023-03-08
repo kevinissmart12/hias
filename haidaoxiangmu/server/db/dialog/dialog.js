@@ -12,6 +12,11 @@ const Dialog={
         const sql=`update dialog set checkStatus='${option.checkStatus}' where id=('${option.id}')`
         return sql
     },
+
+    updateNewObj(new_obj,id){
+        const sql=`update dialog set new_obj='${new_obj}' where id=('${id}')`
+        return sql
+    },
     //需要字段id
     //一般是不会用到的
     delete(id){
@@ -26,6 +31,10 @@ const Dialog={
     },
     getLength(){
         const sql=`select count(*) as length from dialog`
+        return sql
+    },
+    get(id){
+        const sql=`select * from dialog where id='${id}'`
         return sql
     },
 

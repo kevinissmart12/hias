@@ -39,44 +39,82 @@ router.post('/add',function(req,res,next){
     }else{
         ownerInfo.checkStatus=0
     }
-    db.query(owner.add(ownerInfo),function(err,result){
-        if(err)return res.send(err)
 
-        if(result.affectedRows==0)return res.send({status:400,data:{msg:"添加拥有者失败"}})
-        let ownerResult=result
-        ownerInfo.id=ownerResult.insertId
-
-        //对dialog数据库操作
-        //添加/修改/删除type分别对应0/1/2
-        //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
-        //checkStatus刚添加为0,但如果是管理员的话，为1
-        //checkResult，当前为添加水产品操作，分别分为管理员添加和普通用户添加，
-        //old_obj,当前为添加操作，为空
-        //new_obj,为前端传递来的obj
-        let dialogInfo={
-            uid:userInfo.id,
-            type:0,
-            op_obj:1,
-            checkStatus:userInfo.isAdmin==1?1:0,
-            checkResult:userInfo.isAdmin==1?'管理员直接添加':'用户添加',
-            time:new Date(),
-            old_obj:'',
-            new_obj:encodeURIComponent(JSON.stringify(ownerInfo))
-        }
-        db.query(dialog.add(dialogInfo),function(err,result){
+    if(userInfo.isAdmin==1){
+        db.query(owner.add(ownerInfo),function(err,result){
             if(err)return res.send(err)
-
-            if(result.affectedRows==0) console.log({status:400,data:{msg:"添加日志失败"}})
-
-            res.send({
-                status:200,
-                data:{
-                    msg:'添加成功'
-                }
+    
+            if(result.affectedRows==0)return res.send({status:400,data:{msg:"添加拥有者失败"}})
+            let ownerResult=result
+            ownerInfo.id=ownerResult.insertId
+    
+            //对dialog数据库操作
+            //添加/修改/删除type分别对应0/1/2
+            //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
+            //checkStatus刚添加为0,但如果是管理员的话，为1
+            //checkResult，当前为添加水产品操作，分别分为管理员添加和普通用户添加，
+            //old_obj,当前为添加操作，为空
+            //new_obj,为前端传递来的obj
+            let dialogInfo={
+                uid:userInfo.id,
+                type:0,
+                op_obj:1,
+                checkStatus:userInfo.isAdmin==1?1:0,
+                checkResult:userInfo.isAdmin==1?'管理员直接添加':'用户添加',
+                time:new Date(),
+                old_obj:'',
+                new_obj:encodeURIComponent(JSON.stringify(ownerInfo))
+            }
+            db.query(dialog.add(dialogInfo),function(err,result){
+                if(err)return res.send(err)
+    
+                if(result.affectedRows==0) console.log({status:400,data:{msg:"添加日志失败"}})
+    
+                res.send({
+                    status:200,
+                    data:{
+                        msg:'添加成功'
+                    }
+                })
             })
+    
         })
+    }else{
 
-    })
+            //对dialog数据库操作
+            //添加/修改/删除type分别对应0/1/2
+            //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
+            //checkStatus刚添加为0,但如果是管理员的话，为1
+            //checkResult，当前为添加水产品操作，分别分为管理员添加和普通用户添加，
+            //old_obj,当前为添加操作，为空
+            //new_obj,为前端传递来的obj
+            let dialogInfo={
+                uid:userInfo.id,
+                type:0,
+                op_obj:1,
+                checkStatus:userInfo.isAdmin==1?1:0,
+                checkResult:userInfo.isAdmin==1?'管理员直接添加':'用户添加',
+                time:new Date(),
+                old_obj:'',
+                new_obj:encodeURIComponent(JSON.stringify(ownerInfo))
+            }
+            db.query(dialog.add(dialogInfo),function(err,result){
+                if(err)return res.send(err)
+    
+                if(result.affectedRows==0) console.log({status:400,data:{msg:"添加日志失败"}})
+    
+                res.send({
+                    status:200,
+                    data:{
+                        msg:'添加成功'
+                    }
+                })
+            })
+    
+        
+    }
+
+
 })
 
 
@@ -99,40 +137,79 @@ router.post('/update',function(req,res,next){
         if(result.length==0)return res.send({status:400,data:{msg:"更新拥有者信息失败"}})
         //旧的obj
         let old_obj=result[0]
-        db.query(owner.update(ownerInfo),function(err,result){
-            if(err)return res.send(err)
 
-            if(result.affectedRows==0)return res.send({status:400,data:{msg:"更新拥有者信息失败"}})
-            //对dialog数据库操作
-            //添加/修改/删除type分别对应0/1/2
-            //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
-            //checkStatus管理员1，用户0
-            //checkResult，当前为添加水产品操作，分别分为管理员修改和普通用户修改，
-            //old_obj,后端查询旧的obj
-            //new_obj,前端传来的item
-            let dialogInfo={
-                uid:userInfo.id,
-                type:1,
-                op_obj:1,
-                checkStatus:userInfo.isAdmin==1?1:0,
-                checkResult:userInfo.isAdmin==1?'管理员直接修改':'用户修改',
-                time:new Date(),
-                old_obj:encodeURIComponent(JSON.stringify(old_obj)),
-                new_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
-            }
-            db.query(dialog.add(dialogInfo),function(err,result){
+        if(userInfo.isAdmin==1){
+            db.query(owner.update(ownerInfo),function(err,result){
                 if(err)return res.send(err)
     
-                if(result.affectedRows==0)console.log({status:400,data:{msg:"添加日志失败"}})
-    
-                res.send({
-                    status:200,
-                    data:{
-                        msg:'修改成功'
-                    }
+                if(result.affectedRows==0)return res.send({status:400,data:{msg:"更新拥有者信息失败"}})
+                //对dialog数据库操作
+                //添加/修改/删除type分别对应0/1/2
+                //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
+                //checkStatus管理员1，用户0
+                //checkResult，当前为添加水产品操作，分别分为管理员修改和普通用户修改，
+                //old_obj,后端查询旧的obj
+                //new_obj,前端传来的item
+                let dialogInfo={
+                    uid:userInfo.id,
+                    type:1,
+                    op_obj:1,
+                    checkStatus:userInfo.isAdmin==1?1:0,
+                    checkResult:userInfo.isAdmin==1?'管理员直接修改':'用户修改',
+                    time:new Date(),
+                    old_obj:encodeURIComponent(JSON.stringify(old_obj)),
+                    new_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
+                }
+                db.query(dialog.add(dialogInfo),function(err,result){
+                    if(err)return res.send(err)
+        
+                    if(result.affectedRows==0)console.log({status:400,data:{msg:"添加日志失败"}})
+        
+                    res.send({
+                        status:200,
+                        data:{
+                            msg:'修改成功'
+                        }
+                    })
                 })
             })
-        })
+        }else{
+            db.query(owner.updateCheckStatus(0,id),function(err,result){
+                if(err)return res.send(err)
+    
+                if(result.affectedRows==0)return res.send({status:400,data:{msg:"更新拥有者信息失败"}})
+                //对dialog数据库操作
+                //添加/修改/删除type分别对应0/1/2
+                //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
+                //checkStatus管理员1，用户0
+                //checkResult，当前为添加水产品操作，分别分为管理员修改和普通用户修改，
+                //old_obj,后端查询旧的obj
+                //new_obj,前端传来的item
+                let dialogInfo={
+                    uid:userInfo.id,
+                    type:1,
+                    op_obj:1,
+                    checkStatus:userInfo.isAdmin==1?1:0,
+                    checkResult:userInfo.isAdmin==1?'管理员直接修改':'用户修改',
+                    time:new Date(),
+                    old_obj:encodeURIComponent(JSON.stringify(old_obj)),
+                    new_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
+                }
+                db.query(dialog.add(dialogInfo),function(err,result){
+                    if(err)return res.send(err)
+        
+                    if(result.affectedRows==0)console.log({status:400,data:{msg:"添加日志失败"}})
+        
+                    res.send({
+                        status:200,
+                        data:{
+                            msg:'修改成功'
+                        }
+                    })
+                })
+            })
+        }
+
     })
 
 

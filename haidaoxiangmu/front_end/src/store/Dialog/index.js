@@ -83,6 +83,11 @@ export default {
             })
             state.tableData=data
         },
+        //去除被还原的数据
+        deleteRestoredData(state){
+            let id=state.checkingData.id
+            state.tableData=state.tableData.filter(item=>item.id!=id)
+        },
         setCurrentPage(state,data){
             state.currentPage=data
         },
@@ -116,7 +121,7 @@ export default {
             }
         },
         setCheckingData(state,data){
-
+            // console.log(data.type);
             //对data做处理
             let obj={
                 //改id用于修改dialog表的checkStatus
@@ -125,8 +130,13 @@ export default {
                 op_obj:data.op_obj,
                 //用于表示应该被修改的那个表的id
                 op_obj_id:'',
-                //当前的checkStatus
-                checkStatus:data.checkStatus
+                //当前列表显示的checkStatus
+                //0/1/2
+                checkStatus:data.checkStatus,
+                //当前的操作类型
+                type:data.type,
+                
+                
             }
             if(obj.op_obj=='池塘信息'){
                 obj.op_obj=0

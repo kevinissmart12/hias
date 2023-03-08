@@ -3,7 +3,7 @@ const Ponds={
     //增加新的池塘
     //输入除了id以外的其他信息
     add(option){
-        const sql=`insert into aquaculture_ponds (number,lat,lng,area,estimateArea,pondsType,county,town,village,polygon,ownerId,productId,productOutput,comment,checkStatus) values ('${option.number}',${option.lat},${option.lng},${option.area},${option.estimateArea},'${option.pondsType}','${option.county}','${option.town}','${option.village}','${option.polygon}','${option.ownerId}','${option.productId}','${option.productOutput}','${option.comment}','${option.checkStatus}')`
+        const sql=`insert into aquaculture_ponds (number,lat,lng,area,estimateArea,pondsType,county,town,village,polygon,ownerId,productId,productOutput,comment,checkStatus,deleteStatus) values ('${option.number}',${option.lat},${option.lng},${option.area},${option.estimateArea},'${option.pondsType}','${option.county}','${option.town}','${option.village}','${option.polygon}','${option.ownerId}','${option.productId}','${option.productOutput}','${option.comment}','${option.checkStatus}','0')`
         return sql
     },
 
@@ -29,7 +29,7 @@ const Ponds={
     //更新池塘信息
     //需要字段id,number,lat,lng,area,estimateArea,breedMethod,breedType,county,town,village,polygon,ownerId,productId,comment,checkStatus
     update(option){
-        const sql=`update aquaculture_ponds set number='${option.number}',lat=${option.lat},lng=${option.lng},area=${option.area}, estimateArea=${option.estimateArea},pondsType='${option.pondsType}',county='${option.county}',town='${option.town}',village='${option.village}',polygon='${option.polygon}',ownerId='${option.ownerId}',productId='${option.productId}',productOutput='${option.productOutput}',comment='${option.comment}',checkStatus='${option.checkStatus}' where id=('${option.id}')`
+        const sql=`update aquaculture_ponds set number='${option.number}',lat=${option.lat},lng=${option.lng},area=${option.area}, estimateArea=${option.estimateArea},pondsType='${option.pondsType}',county='${option.county}',town='${option.town}',village='${option.village}',polygon='${option.polygon}',ownerId='${option.ownerId}',productId='${option.productId}',productOutput='${option.productOutput}',comment='${option.comment}',checkStatus='${option.checkStatus}',deleteStatus='0' where id=('${option.id}')`
         return sql
     },
 
@@ -37,7 +37,13 @@ const Ponds={
     //删除某池塘
     //需要字段id
     delete(id){
-        const sql=`delete from aquaculture_ponds where (id='${id}')`
+        const sql=`update aquaculture_ponds set deleteStatus='1' where id=('${id}')`
+
+        return sql
+    },
+    updateDeleteStatus(id){
+        const sql=`update aquaculture_ponds set deleteStatus='0' where id=('${id}')`
+
         return sql
     },
 

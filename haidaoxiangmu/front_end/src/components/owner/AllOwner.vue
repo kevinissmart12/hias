@@ -575,14 +575,12 @@ export default {
         deleteSelect(item){
             let data=this.qs.stringify(item)
 
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            this.$confirm('确认删除数据, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then((e)=>{
-                //前端删除
-                //把store里的数据删除
-                this.$store.commit('allOwner/deleteItem',item.id)
+
                 //后端
                 this.$axios({
                     url:'/api/owner/delete',
@@ -592,6 +590,9 @@ export default {
                     console.log(res);
                     if(res.data.status==200){
                         this.$message.success('删除成功');
+                        //前端删除
+                        //把store里的数据删除
+                        this.$store.commit('allOwner/deleteItem',item.id)
                     }
                 })
             }).catch((e)=>{

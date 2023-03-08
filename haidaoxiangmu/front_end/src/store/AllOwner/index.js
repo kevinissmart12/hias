@@ -25,8 +25,11 @@ export default {
     },
     mutations:{
         setTableData(state,data){
+            let arr=data.filter(item=>item.deleteStatus!=1)
+            
+
             setTimeout(()=>{
-                data.forEach((i,v)=>{
+                arr.forEach((i,v)=>{
                     if(i.checkStatus==0){
                         i.checkStatus='审核中'
                     }else if(i.checkStatus==1){
@@ -61,7 +64,7 @@ export default {
             },500)
 
 
-            state.tableData=data
+            state.tableData=arr
         },
         deleteItem(state,id){
             state.tableData=state.tableData.filter(item=>item.id!=id)

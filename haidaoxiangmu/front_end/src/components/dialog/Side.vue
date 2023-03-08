@@ -98,7 +98,12 @@ export default {
         Pagesize(){
             return this.$store.state.dialog.pageSize
         },
-    }
+    },
+    beforeDestroy() {
+        this.$store.commit('dialog/setCurrentPage',1)
+        this.$store.commit('dialog/setSearch',false)
+        
+    },
     
 }
 </script>

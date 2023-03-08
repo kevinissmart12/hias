@@ -6,7 +6,9 @@ export default {
     mutations:{
         setTableData(state,data){
 
-            data.forEach((i,v)=>{
+            let arr=data.filter(item=>item.deleteStatus!=1)
+
+            arr.forEach((i,v)=>{
                 if(i.checkStatus==0){
                     i.checkStatus='审核中'
                 }else if(i.checkStatus==1){
@@ -17,7 +19,16 @@ export default {
                 
             })
 
-            state.tableData=data
+            state.tableData=arr
+        },
+        //把特定的一行提到第一行
+        changeToFirst(state,id){
+            // setTimeout(()=>{
+                let obj=state.tableData.filter(item=>item.id==id)
+                let arr=state.tableData.filter(item=>item.id!=id)
+                arr.unshift(obj[0])
+                state.tableData=arr
+            // },100)
         },
         
     }

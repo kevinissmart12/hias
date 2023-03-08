@@ -85,6 +85,9 @@ export default {
         setPolygons(state,data){
             if(state.polygons.length==0){
                 data.forEach((i,v)=>{
+                    if(i.deleteStatus==1){
+                        return
+                    }
                     let object={
                         position:{
                             lat:i.lat,
@@ -105,6 +108,7 @@ export default {
                         editing:false,
                         id:i.id,
                         checkStatus:i.checkStatus,
+                        deleteStatus:i.deleteStatus
                     }
 
                     //对i.polygon做变化
@@ -506,8 +510,16 @@ export default {
 
         //allponds
         setAllPonds(state,data){
+            let arr=data.filter(item=>item.deleteStatus!=1)
+
             setTimeout(()=>{
-                data.forEach((i,v)=>{
+                arr.forEach((i,v)=>{
+                    if(i.productId==''){
+                        i.product='Null'
+                    }
+                    if(i.ownerId==''){
+                        i.owner='Null'
+                    }
                     i.ownerId=i.owner.id
                     i.owner=i.owner.name
                     i.productId=i.product.id
@@ -551,7 +563,7 @@ export default {
                         }
                     })
                 })
-                state.allPonds=data
+                state.allPonds=arr
             },100)
             
         },
@@ -566,7 +578,6 @@ export default {
                 arr.unshift(obj[0])
                 state.allPonds=arr
             },100)
-
         },
         deletePonds(state,id){
             state.allPonds=state.allPonds.filter(item=>item.id!=id)

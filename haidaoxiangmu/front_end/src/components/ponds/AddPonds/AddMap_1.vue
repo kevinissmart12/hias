@@ -110,8 +110,9 @@ export default {
         },
         //跳转到水产
         goProduct(id){
+            
             this.$router.push({
-                path:`/products/add?id=${id}`
+                path:`/products/all?id=${id}`
             })
         },
         goPond(){

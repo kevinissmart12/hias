@@ -7,13 +7,16 @@
 
             <el-table
                 :data="tempTableData"
-                style="width: 100%">
+                style="width: 100%"
+                :row-class-name="tableRowClassName"
+            >
                 <el-table-column
                     :prop="item.prop"
                     :label="item.label"
                     :width="item.width"
                     v-for="(item,index) in tableItem" 
                     :key="index"
+                    ref="table_column"
                 >
                     <template slot-scope="scope">
                         <img v-if="item.prop=='imgUrl'" :src="scope.row.imgUrl" alt="" width="90">
@@ -124,8 +127,13 @@ export default {
 
                 if(res.data.status==200){
                     this.$message.success(res.data.data.msg);
-                    this.tempTableData=res.data.data.data.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
                     this.$store.commit('allProducts/setTableData',res.data.data.data)
+                    if(this.$route.query.id){
+                        this.$store.commit('allProducts/changeToFirst',this.$route.query.id)
+                        // console.log(this.$refs.table_column[0]);
+                    }
+                    this.tempTableData=this.TableData.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
+
                 }
 
             })
@@ -169,6 +177,14 @@ export default {
             this.tempTableData=this.TableData.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
 
         },
+        tableRowClassName({row, rowIndex}) {
+            if (rowIndex == 0 &&this.ID&&this.currentPage==1) {
+                // console.log(this.ID);
+                // console.log(row);
+                return 'warning-row';
+            }
+            return '';
+        }
     },
     created(){
         this.getProducts()
@@ -179,6 +195,9 @@ export default {
         },
         TableData(){
             return this.$store.state.allProducts.tableData
+        },
+        ID(){
+            return this.$route.query.id
         }
     }
 }
@@ -197,6 +216,13 @@ export default {
     }
     table {
         border-collapse: collapse;
+    }
+    ::v-deep .warning-row {
+        background: oldlace;
+    }
+
+    .success-row {
+        background: #f0f9eb;
     }
     
 </style>
