@@ -66,8 +66,9 @@
                 <el-form-item label="审核情况">
                     <el-select v-model="form.checkStatus" placeholder="请选择">
                         <el-option label="审核中" value="0"></el-option>
-                        <el-option label="已通过" value="1"></el-option>
+                        <el-option label="已审核" value="1"></el-option>
                         <el-option label="未通过" value="2"></el-option>
+
                     </el-select>
                 </el-form-item>
 
@@ -94,6 +95,7 @@ export default {
                 name:'',
                 creditLevel:'',
                 checkStatus:'',
+                deleteStatus:0
             },
             //1=>定海区，2=>普陀区,3=>岱山县,4=>嵊泗县
             countyOption:[

@@ -76,7 +76,7 @@ const Ponds={
 
 
     search(option){
-        const sql=`select * from aquaculture_ponds where ownerId like '%${option.ownerId}%' and productId like '%${option.productId}%' and county like '%${option.county}%' and town like '%${option.town}%' and village like '%${option.village}%' and checkStatus like '%${option.checkStatus}%' `
+        const sql=`select * from aquaculture_ponds where ownerId like '%${option.ownerId}%' and productId like '%${option.productId}%' and county like '%${option.county}%' and town like '%${option.town}%' and village like '%${option.village}%' and checkStatus like '%${option.checkStatus}%' and deleteStatus like '%${option.deleteStatus}%'`
         return sql
     },
 

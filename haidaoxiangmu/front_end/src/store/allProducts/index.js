@@ -12,7 +12,7 @@ export default {
                 if(i.checkStatus==0){
                     i.checkStatus='审核中'
                 }else if(i.checkStatus==1){
-                    i.checkStatus='已通过'
+                    i.checkStatus='已审核'
                 }else if(i.checkStatus==2){
                     i.checkStatus='未通过'
                 }

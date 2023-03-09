@@ -226,6 +226,7 @@ export default {
                 discriminator:'',
                 creditLevel:'',
                 checkStatus:1,
+                deleteStatus:0,
             }
             
             let data=this.qs.stringify(searchForm)

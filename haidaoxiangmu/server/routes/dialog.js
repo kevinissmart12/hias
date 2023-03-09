@@ -49,6 +49,63 @@ router.post('/pass',function(req,res,next){
     //如果为添加，只需要修改两个表的checkStatus即可
     //如果为更新，既要修改两个表的checkStatus，还要把当前新数据读出来，并更新内容
 
+    //对当前要处理的对象，先进行查找，如果未删除状态，则提示，当前对象已删除
+    //如果当前对象未被审核，跳过以下判断
+    // if(checkingData.op_obj_id){
+    //     if(checkingData.op_obj==0){
+    //         db.query(ponds.get(checkingData.op_obj_id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0)return res.send({status:400,data:{msg:'未能查找到要修改的对象'}})
+
+    //             if(result[0].deleteStatus==1){
+    //                 //表明当前对象未删除状态
+    //                 //不用再执行下面的拒绝操作
+    //                 return res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'当前对象已被删除',
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }else if(checkingData.op_obj==1){
+    //         db.query(owner.get(checkingData.op_obj_id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0)return res.send({status:400,data:{msg:'未能查找到要修改的对象'}})
+
+    //             if(result[0].deleteStatus==1){
+    //                 //表明当前对象未删除状态
+    //                 //不用再执行下面的拒绝操作
+    //                 return res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'当前对象已被删除',
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }else if(checkingData.op_obj==2){
+    //         db.query(products.get(checkingData.op_obj_id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0)return res.send({status:400,data:{msg:'未能查找到要修改的对象'}})
+
+    //             if(result[0].deleteStatus==1){
+    //                 //表明当前对象未删除状态
+    //                 //不用再执行下面的拒绝操作
+    //                 return res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'当前对象已被删除',
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }
+    // }
+
     if(checkingData.type=='添加'){
         //未审核就要插入数据
         //未通过的就要修改checkStatus
@@ -78,7 +135,7 @@ router.post('/pass',function(req,res,next){
                             newData.id=tempId
                             //加密
                             let encryptData=encodeURIComponent(JSON.stringify(newData))
-                            db.query(ponds.updateCheckStatus(checkingData.checkStatus,tempId),function(err,result){
+                            db.query(ponds.updateCheckStatus(1,tempId),function(err,result){
                                 if(err)return res.send(err)
                 
                                 if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败0'}})
@@ -117,7 +174,7 @@ router.post('/pass',function(req,res,next){
                             newData.id=tempId
                             //加密
                             let encryptData=encodeURIComponent(JSON.stringify(newData))
-                            db.query(owner.updateCheckStatus(checkingData.checkStatus,tempId),function(err,result){
+                            db.query(owner.updateCheckStatus(1,tempId),function(err,result){
                                 if(err)return res.send(err)
                 
                                 if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败1'}})
@@ -159,7 +216,7 @@ router.post('/pass',function(req,res,next){
                             //加密
                             let encryptData=encodeURIComponent(JSON.stringify(newData))
                             //更改checkStatus
-                            db.query(products.updateCheckStatus(checkingData.checkStatus,tempId),function(err,result){
+                            db.query(products.updateCheckStatus(1,tempId),function(err,result){
                                 if(err)return res.send(err)
                 
                                 if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败2'}})
@@ -212,7 +269,7 @@ router.post('/pass',function(req,res,next){
                                 newData.id=tempId
                                 //加密
                                 let encryptData=encodeURIComponent(JSON.stringify(newData))
-                                db.query(ponds.updateCheckStatus(checkingData.checkStatus,tempId),function(err,result){
+                                db.query(ponds.updateCheckStatus(1,tempId),function(err,result){
                                     if(err)return res.send(err)
                     
                                     if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败0'}})
@@ -250,7 +307,7 @@ router.post('/pass',function(req,res,next){
                                 newData.id=tempId
                                 //加密
                                 let encryptData=encodeURIComponent(JSON.stringify(newData))
-                                db.query(owner.updateCheckStatus(checkingData.checkStatus,tempId),function(err,result){
+                                db.query(owner.updateCheckStatus(1,tempId),function(err,result){
                                     if(err)return res.send(err)
                     
                                     if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败1'}})
@@ -291,7 +348,7 @@ router.post('/pass',function(req,res,next){
                                 //加密
                                 let encryptData=encodeURIComponent(JSON.stringify(newData))
                                 //更改checkStatus
-                                db.query(products.updateCheckStatus(checkingData.checkStatus,tempId),function(err,result){
+                                db.query(products.updateCheckStatus(1,tempId),function(err,result){
                                     if(err)return res.send(err)
                     
                                     if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败2'}})
@@ -385,7 +442,7 @@ router.post('/pass',function(req,res,next){
                     
                         if(result.length==0)return res.send({status:400,data:{msg:'更新失败0'}})
                         
-                        db.query(ponds.updateCheckStatus(checkingData.checkStatus,checkingData.op_obj_id),function(err,result){
+                        db.query(ponds.updateCheckStatus(1,checkingData.op_obj_id),function(err,result){
                             if(err)return res.send(err)
             
                             if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败0'}})
@@ -414,7 +471,7 @@ router.post('/pass',function(req,res,next){
                     
                         if(result.length==0)return res.send({status:400,data:{msg:'更新失败1'}})
                         
-                        db.query(owner.updateCheckStatus(checkingData.checkStatus,checkingData.op_obj_id),function(err,result){
+                        db.query(owner.updateCheckStatus(1,checkingData.op_obj_id),function(err,result){
                             if(err)return res.send(err)
             
                             if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败1'}})
@@ -444,7 +501,7 @@ router.post('/pass',function(req,res,next){
                     
                         if(result.length==0)return res.send({status:400,data:{msg:'更新失败2'}})
                         
-                        db.query(products.updateCheckStatus(checkingData.checkStatus,checkingData.op_obj_id),function(err,result){
+                        db.query(products.updateCheckStatus(1,checkingData.op_obj_id),function(err,result){
                             if(err)return res.send(err)
             
                             if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败2'}})
@@ -471,6 +528,63 @@ router.post('/pass',function(req,res,next){
 router.post('/deny',function(req,res,next){
     const checkingData=req.body
 
+    //对当前要处理的对象，先进行查找，如果未删除状态，则提示，当前对象已删除
+    //如果当前对象未被审核，跳过以下判断
+    // if(checkingData.op_obj_id){
+    //     if(checkingData.op_obj==0){
+    //         db.query(ponds.get(checkingData.op_obj_id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0)return res.send({status:400,data:{msg:'未能查找到要修改的对象'}})
+
+    //             if(result[0].deleteStatus==1){
+    //                 //表明当前对象未删除状态
+    //                 //不用再执行下面的拒绝操作
+    //                 return res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'当前对象已被删除',
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }else if(checkingData.op_obj==1){
+    //         db.query(owner.get(checkingData.op_obj_id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0)return res.send({status:400,data:{msg:'未能查找到要修改的对象'}})
+
+    //             if(result[0].deleteStatus==1){
+    //                 //表明当前对象未删除状态
+    //                 //不用再执行下面的拒绝操作
+    //                 return res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'当前对象已被删除',
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }else if(checkingData.op_obj==2){
+    //         db.query(products.get(checkingData.op_obj_id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0)return res.send({status:400,data:{msg:'未能查找到要修改的对象'}})
+
+    //             if(result[0].deleteStatus==1){
+    //                 //表明当前对象未删除状态
+    //                 //不用再执行下面的拒绝操作
+    //                 return res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'当前对象已被删除',
+    //                     }
+    //                 })
+    //             }
+    //         })
+    //     }
+    // }
+    
 
     if(checkingData.type=='添加'){
         
@@ -508,7 +622,7 @@ router.post('/deny',function(req,res,next){
                     //再修改其他表
                     if(checkingData.op_obj==0){
                         //池塘
-                        db.query(ponds.updateCheckStatus(checkingData.checkStatus,id),function(err,result){
+                        db.query(ponds.updateCheckStatus(2,id),function(err,result){
                                 if(err)return res.send(err)
 
                                 if(result.affectedRows==0)return res.send({status:400,data:{msg:'拒绝失败0'}})
@@ -522,7 +636,7 @@ router.post('/deny',function(req,res,next){
                         })
                     }else if(checkingData.op_obj==1){
                         //拥有者
-                        db.query(owner.updateCheckStatus(checkingData.checkStatus,id),function(err,result){
+                        db.query(owner.updateCheckStatus(2,id),function(err,result){
                                 if(err)return res.send(err)
 
                                 if(result.affectedRows==0)return res.send({status:400,data:{msg:'拒绝失败1'}})
@@ -536,7 +650,7 @@ router.post('/deny',function(req,res,next){
                         })
                     }else if(checkingData.op_obj==2){
                         //水产品
-                        db.query(products.updateCheckStatus(checkingData.checkStatus,id),function(err,result){
+                        db.query(products.updateCheckStatus(2,id),function(err,result){
                                 if(err)return res.send(err)
 
                                 if(result.affectedRows==0)return res.send({status:400,data:{msg:'拒绝失败2'}})
@@ -560,6 +674,7 @@ router.post('/deny',function(req,res,next){
     }
     else if(checkingData.type=='修改'){
         //先修改dialog表，再修改其他表
+        //改为未通过状态
         db.query(dialog.update(checkingData),function(err,result){
             if(err)return res.send(err)
 
@@ -568,26 +683,27 @@ router.post('/deny',function(req,res,next){
             //再修改其他表
             if(checkingData.op_obj==0){
                 //池塘
+                //改为已审核状态 =>1
                 db.query(dialog.get(checkingData.id),function(err,result){
                     if(err)return res.send(err)
                     
                     if(result.length==0)return res.send({status:400,data:{msg:'查找失败0'}})
                 
-                    let old_obj=JSON.parse(decodeURIComponent(result[0].old_obj))
+                    let oldData=JSON.parse(decodeURIComponent(result[0].old_obj))
                     //去具体的表修改数据
-                    db.query(ponds.update(old_obj),function(err,result){
+                    db.query(ponds.update(oldData),function(err,result){
                         if(err)return res.send(err)
                     
                         if(result.length==0)return res.send({status:400,data:{msg:'更新失败0'}})
                         
-                        db.query(ponds.updateCheckStatus(checkingData.checkStatus,checkingData.op_obj_id),function(err,result){
+                        db.query(ponds.updateCheckStatus(1,checkingData.op_obj_id),function(err,result){
                             if(err)return res.send(err)
             
-                            if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败0'}})
+                            if(result.affectedRows==0)return res.send({status:400,data:{msg:'拒绝失败0'}})
                             res.send({
                                 status:200,
                                     data:{
-                                        msg:'已通过',
+                                        msg:'未通过',
                                     }
                             })
                         })
@@ -597,31 +713,60 @@ router.post('/deny',function(req,res,next){
                 })
             }else if(checkingData.op_obj==1){
                 //拥有者
-                db.query(owner.updateCheckStatus(checkingData.checkStatus,checkingData.op_obj_id),function(err,result){
+                db.query(dialog.get(checkingData.id),function(err,result){
                     if(err)return res.send(err)
-
-                    if(result.affectedRows==0)return res.send({status:400,data:{msg:'拒绝失败1'}})
-
-                    res.send({
-                        status:200,
-                        data:{
-                            msg:'已拒绝'
-                        }
+                    
+                    if(result.length==0)return res.send({status:400,data:{msg:'查找失败1'}})
+                
+                    let oldData=JSON.parse(decodeURIComponent(result[0].old_obj))
+                    //去具体的表修改数据
+                    db.query(owner.update(oldData),function(err,result){
+                        if(err)return res.send(err)
+                    
+                        if(result.length==0)return res.send({status:400,data:{msg:'更新失败1'}})
+                        
+                        db.query(owner.updateCheckStatus(1,checkingData.op_obj_id),function(err,result){
+                            if(err)return res.send(err)
+            
+                            if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败1'}})
+                            res.send({
+                                status:200,
+                                data:{
+                                    msg:'未通过',
+                                }
+                            })
+                        })
+                        
                     })
                 })
             }else if(checkingData.op_obj==2){
                 //水产品
-                db.query(products.updateCheckStatus(checkingData.checkStatus,checkingData.op_obj_id),function(err,result){
+                db.query(dialog.get(checkingData.id),function(err,result){
                     if(err)return res.send(err)
-
-                    if(result.affectedRows==0)return res.send({status:400,data:{msg:'拒绝失败2'}})
-
-                    res.send({
-                        status:200,
-                        data:{
-                            msg:'已拒绝'
-                        }
+                    
+                    if(result.length==0)return res.send({status:400,data:{msg:'查找失败2'}})
+                
+                    let oldData=JSON.parse(decodeURIComponent(result[0].old_obj))
+                    //去具体的表修改数据
+                    db.query(products.update(oldData),function(err,result){
+                        if(err)return res.send(err)
+                    
+                        if(result.length==0)return res.send({status:400,data:{msg:'更新失败2'}})
+                        
+                        db.query(products.updateCheckStatus(1,checkingData.op_obj_id),function(err,result){
+                            if(err)return res.send(err)
+            
+                            if(result.affectedRows==0)return res.send({status:400,data:{msg:'通过失败2'}})
+                            res.send({
+                                status:200,
+                                    data:{
+                                        msg:'未通过',
+                                    }
+                            })
+                        })
+                        
                     })
+                        
                 })
             }
         })

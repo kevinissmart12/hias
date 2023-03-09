@@ -97,6 +97,11 @@
                         <td align="center">{{oldpondTableData.number||'无'}}</td>
                     </tr>
                     <tr>
+                        <td width="100px" height="50px" align="center">养殖方式</td>
+                        <td align="center">{{newpondTableData.pondsType==0?'海水养殖':'淡水养殖'||'无'}}</td>
+                        <td align="center">{{oldpondTableData.pondsType==0?'海水养殖':'淡水养殖'||'无'}}</td>
+                    </tr>
+                    <tr>
                         <td width="100px" height="50px" align="center">纬度</td>
                         <td align="center">{{newpondTableData.lat||'无'}}</td>
                         <td align="center">{{oldpondTableData.lat||'无'}}</td>

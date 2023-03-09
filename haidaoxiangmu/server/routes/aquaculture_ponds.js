@@ -415,9 +415,11 @@ router.post('/search',function(req,res,next){
         town:pondsInfo.town?pondsInfo.town:'',
         village:pondsInfo.village?pondsInfo.village:'',
         checkStatus:pondsInfo.checkStatus?pondsInfo.checkStatus:'',
+        deleteStatus:pondsInfo.deleteStatus?pondsInfo.deleteStatus:'',
     }
 
     db.query(ponds.search(finalPondsInfo),function(err,result){
+        console.log(ponds.search(finalPondsInfo));
         if(err)return res.send(err)
 
         if(result.length==0)return res.send({status:200,data:{msg:"查询到0个匹配的池塘",has:0}})

@@ -52,7 +52,7 @@ const Products={
 
     //根据product的名字搜索
     search(option){
-        const sql=`select * from aquaculture_products where name like '%${option.name}%' and checkStatus like 1`
+        const sql=`select * from aquaculture_products where name like '%${option.name}%' and checkStatus like 1 and deleteStatus like 0`
         return sql
     }
 

@@ -20,7 +20,7 @@
                     label="操作"
                     width="120">
                     <template slot-scope="scope">
-                        <el-button v-if="scope.row.checkStatus=='已通过'" @click="check(scope.row)" type="text" size="small">去查看</el-button>
+                        <el-button v-if="scope.row.checkStatus=='已审核'" @click="check(scope.row)" type="text" size="small">去查看</el-button>
                         <el-button @click="deleteSelect(scope.row)" style="color:red" type="text" size="small">删除</el-button>
                     </template>
                 </el-table-column>

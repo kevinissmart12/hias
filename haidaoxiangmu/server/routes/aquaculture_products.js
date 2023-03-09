@@ -366,7 +366,7 @@ router.post('/delete',function(req,res,next){
 
 
 //模糊搜索
-//条件有name
+//条件有name 
 //需要token
 router.post('/search',function(req,res,next){
     const productInfo=req.body
