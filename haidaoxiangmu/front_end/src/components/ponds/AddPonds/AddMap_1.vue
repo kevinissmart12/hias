@@ -234,19 +234,35 @@ export default {
                 },100)
 
             }else{
+                // console.log(item);
                 this.infoPosition={
                     lng:item.position.lng,
                     lat:item.position.lat
                 }
-                this.infoOwner=item.owner
-                this.infoproduct=item.product
+                if(!item.owner){
+                    this.infoOwner='null'
+                    this.$store.commit('ponds/setOwner','null')
+                    this.$store.commit('ponds/setOwnerId',-1)
+                }else{
+                    this.infoOwner=item.owner
+                    this.$store.commit('ponds/setOwner',item.owner.name)
+                    this.$store.commit('ponds/setOwnerId',item.owner.id)
+                }
+
+                if(!item.product){
+                    this.infoproduct='null'
+                    this.$store.commit('ponds/setProduct','null')
+                    this.$store.commit('ponds/setProductId',-1)
+                }else{
+                    this.infoproduct=item.product
+                    this.$store.commit('ponds/setProduct',item.product.name)
+                    this.$store.commit('ponds/setProductId',item.product.id)
+                }
+                
                 
                 //设置form的一系列值，传到store
                 this.$store.commit('ponds/setNumber',item.number)
-                this.$store.commit('ponds/setOwner',item.owner.name)
-                this.$store.commit('ponds/setOwnerId',item.owner.id)
-                this.$store.commit('ponds/setProduct',item.product.name)
-                this.$store.commit('ponds/setProductId',item.product.id)
+
                 this.$store.commit('ponds/setProductOutput',item.productOutput)
 
                 this.$store.commit('ponds/setLng',item.position.lng)

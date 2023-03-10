@@ -514,16 +514,20 @@ export default {
 
             setTimeout(()=>{
                 arr.forEach((i,v)=>{
-                    if(i.productId==''){
+                    if(i.productId=='null'){
                         i.product='Null'
+                    }else{
+                        i.productId=i.product.id
+                        i.product=i.product.name
                     }
-                    if(i.ownerId==''){
+                    if(i.ownerId=='null'){
                         i.owner='Null'
+                    }else{
+                        i.ownerId=i.owner.id
+                        i.owner=i.owner.name
                     }
-                    i.ownerId=i.owner.id
-                    i.owner=i.owner.name
-                    i.productId=i.product.id
-                    i.product=i.product.name
+                    
+                    
                     
                     if(i.checkStatus==0){
                         i.checkStatus='审核中'

@@ -208,6 +208,7 @@ export default {
             setTimeout(()=>{
                 data.forEach((i,v)=>{
                     //新对象
+                    if(!i.product)return
                     let newProductItem={
                         county:i.county,
                         town:i.town,
@@ -283,6 +284,7 @@ export default {
             setTimeout(()=>{
                 //生成新数组
                 state.allProducts.forEach((pi,pv)=>{
+                    if(pi.deleteStatus==1)return
                     let newItem={
                         id:pi.id,
                         name:pi.name,

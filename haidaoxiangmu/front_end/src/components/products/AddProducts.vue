@@ -254,11 +254,8 @@ export default {
                 data:data
             }).then(res=>{
                 console.log(res.data);
-                if(res.data.status==401)return
-                if(res.data.status!==200){
-                    return this.$message.error(res.data.data.msg);
-                }else{
-                    
+                if(res.data.status==200){
+                    return this.$message.success(res.data.data.msg);
                 }
             })
         },

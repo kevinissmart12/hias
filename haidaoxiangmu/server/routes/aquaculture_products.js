@@ -338,7 +338,7 @@ router.post('/delete',function(req,res,next){
                     let arr=Array.from(result)
                     arr.forEach((i,v)=>{
                         //productId设置为空
-                        db.query(ponds.updateProductId('',i.id),function(err,result){
+                        db.query(ponds.updateProductId('null',i.id),function(err,result){
                             if(err)return res.send(err)
                             if(result.affectedRows==0)return res.send({status:400,data:{msg:'更新错误'}})
                         })

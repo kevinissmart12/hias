@@ -63,6 +63,8 @@ export default {
                 county:'',
                 town:'',
                 village:'',
+                checkStatus:1,
+                deleteStatus:0
             },
             //1=>定海区，2=>普陀区,3=>岱山县,4=>嵊泗县
             countyOption:[

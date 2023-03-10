@@ -811,7 +811,7 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.dialogVisible=false
-                    this.$message.success('已通过');
+                    this.$message.success(res.data.data.msg);
                     this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
                             i.checkStatus='已通过'
@@ -838,7 +838,7 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.dialogVisible=false
-                    this.$message.success('未通过');
+                    this.$message.success(res.data.data.msg);
                     this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
                             i.checkStatus='未通过'
