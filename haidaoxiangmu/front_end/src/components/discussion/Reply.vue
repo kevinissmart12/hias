@@ -152,6 +152,8 @@ export default {
                     // this.$store.commit('discussion/setTitle',item.title)
                     this.$store.commit('discussion/setContent',item.content)
                     this.$store.commit('discussion/setUpdateId',id)
+                    this.$store.commit('discussion/setRId',item.rid)
+
 
                 }
             })
