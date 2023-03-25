@@ -6,7 +6,7 @@
 
             <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
             <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-
+            <!-- 后端点获取的池塘的点 -->
             <bm-marker 
                 v-for="(item) in Polygons"
                 :key="item.lat"
@@ -14,7 +14,7 @@
                 @click="infoWindowOpen(item)"
             >
             </bm-marker>
-
+            <!-- 信息窗口 -->
             <bm-info-window 
                 :position="infoPosition"
                 :show="show" 
@@ -28,7 +28,7 @@
                 </div>
                 <el-button type="text" @click="goPond">查看该池塘详细信息</el-button>
             </bm-info-window>
-
+            <!-- 后端获取的池塘形状 -->
             <bm-polygon 
                 
                 v-for="(item,index) in Polygons" 
@@ -37,7 +37,7 @@
                 :editing="item.editing"
                 @lineupdate='polygonsUpdate'
             ></bm-polygon>
-            
+            <!-- 新增池塘的点和形状 -->
             <bm-marker v-if="drawingMarker" :position='drawingMarker' ></bm-marker>
             <bm-polygon
                 :path="path" 
@@ -407,13 +407,12 @@ export default {
             this.$store.commit('ponds/setDrawingPolygon',polygon)
             this.$store.commit('ponds/newPolygon',this.EditPond)
             //把新增的多边形path清空
+            //如果不清除就会出现两个重合的多边形
             this.drawingPolygon.paths=[]
             this.drawingMarker={}
             //停止绘制
             this.$store.commit('ponds/setAddPond',false)
-            
 
-            
         },
         paintPolygon (e) {
             if (!this.drawingPolygon.editing) {

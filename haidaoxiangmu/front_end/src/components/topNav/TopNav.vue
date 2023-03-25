@@ -58,7 +58,7 @@ export default {
                     {'id':'5-4',content:'养殖人员随机采样',isAdmin:1,url:'/statistic/randomOwner'},
                 ]},
                 {'id':'6',content:'账户管理',isAdmin:0,url:'/account'},
-                {'id':'7',content:'日志&审核',isAdmin:1,url:'/dialog'},
+                {'id':'7',content:'日志审核',isAdmin:1,url:'/dialog'},
                 {'id':'8',content:'信息交流',isAdmin:0,url:'/discussion'},
                 {'id':'9',content:'退出登录',isAdmin:0,url:'/login'},
 

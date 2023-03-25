@@ -17,14 +17,15 @@
                 <el-form-item label="密码" prop="password">
                     <el-input v-model.trim="ruleForm.password"></el-input>
                 </el-form-item>
-                <el-form-item label="身份">
+                <el-form-item label="身份" prop="isAdmin">
                     <el-select v-model="ruleForm.isAdmin" placeholder="身份">
                     <el-option label="用户" value="0"></el-option>
                     <el-option label="管理员" value="1"></el-option>
                     </el-select>
                 </el-form-item>
                 <div class="button">
-                    <el-button type="warning" @click="register">注册</el-button>
+                    <el-button type="warning" @click="register()">注册</el-button>
+                    <el-button type="success" @click="back">返回</el-button>
                 </div>
 
             </el-form>
@@ -61,22 +62,30 @@ export default {
             if(this.ruleForm.name==''||this.ruleForm.password==''||this.ruleForm.isAdmin==''){
                 return this.$message.error('账号、密码等不为空');
             }
+            if(this.ruleForm.name.length<3||this.ruleForm.name.length>15){
+                return this.$message.error('账号长度在 3 到 15 个字符');
+            }
+            if(this.ruleForm.password.length<6||this.ruleForm.password.length>10){
+                return this.$message.error('账号长度在 6 到 10 个字符');
+            }
             let data=this.qs.stringify(this.ruleForm)
-
             this.$axios({
                 url:'/api/user/register',
                 method:"POST",
                 data:data
             }).then(res=>{
-
                 if(res.data.status!==200){
                     return this.$message.error(res.data.data.msg);
                 }else{
                     this.$router.push('/login')
                     this.$message.success(res.data.data.msg);
                 }
-
             })
+
+
+        },
+        back(){
+            this.$router.push('/login')
         }
     }
 }

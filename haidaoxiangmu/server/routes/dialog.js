@@ -110,6 +110,8 @@ router.post('/pass',function(req,res,next){
                 }
             })
         }
+    }else{
+        passFn()
     }
 
     function passFn(){
@@ -561,6 +563,7 @@ router.post('/deny',function(req,res,next){
                 }
             })
         }else if(checkingData.op_obj==1){
+            
             db.query(owner.get(checkingData.op_obj_id),function(err,result){
                 if(err)return res.send(err)
 
@@ -599,9 +602,12 @@ router.post('/deny',function(req,res,next){
                 }
             })
         }
+    }else{
+        denyFn()
     }
 
     function denyFn(){
+        
         if(checkingData.type=='添加'){
         
         

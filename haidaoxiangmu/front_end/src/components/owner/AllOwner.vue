@@ -671,7 +671,6 @@ export default {
         handleCurrentChange (currentPage) {
             this.currentPage = currentPage;
             this.tempTableData=this.AllOwner.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
-
         },
 
 

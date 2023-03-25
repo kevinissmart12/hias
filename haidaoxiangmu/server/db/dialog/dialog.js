@@ -26,7 +26,7 @@ const Dialog={
     //获取所有
     //无需字段
     getAll(option){
-        const sql=`select * from dialog limit ${option.front},${option.end}`
+        const sql=`select * from dialog limit ${option.front},${option.end-option.front}`
         return sql
     },
     getLength(){
@@ -40,7 +40,7 @@ const Dialog={
 
 
     search(option){
-        const sql=`select * from dialog where  uid like '%${option.uid}%' and  type like '%${option.type}%' and op_obj like '%${option.op_obj}%' limit ${option.front},${option.end}`
+        const sql=`select * from dialog where  uid like '%${option.uid}%' and  type like '%${option.type}%' and op_obj like '%${option.op_obj}%' limit ${option.front},${option.end-option.front}`
         return sql
     },
     searchLength(option){

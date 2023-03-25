@@ -572,12 +572,13 @@ export default {
                 front:(this.CurrentPage-1)*this.Pagesize,
                 end:this.CurrentPage*this.Pagesize
             })
+            // console.log(data);
             this.$axios({
                 url:'/api/dialog/getAll',
                 method:'POST',
                 data:data
             }).then(res=>{
-                console.log(res.data);
+                // console.log(res.data);
                 if(res.data.status==200){
                     this.$store.commit('dialog/setTableData',res.data.data.data)
                     this.length=res.data.data.length
@@ -594,6 +595,7 @@ export default {
                 front:(this.CurrentPage-1)*this.Pagesize,
                 end:this.CurrentPage*this.Pagesize,
             })
+            // console.log(data);
 
             this.$axios({
                 url:"/api/dialog/search",
@@ -602,6 +604,10 @@ export default {
             }).then(res=>{
                 console.log(res.data);
                 if(res.data.status==200){
+                    this.$message.success(res.data.data.msg);
+                    if(res.data.data.has==0){
+                        return
+                    }
                     this.$store.commit('dialog/setTableData',res.data.data.data)
                     this.length=res.data.data.slength
                     // this.$store.commit('dialog/setSearch',false)
@@ -690,7 +696,6 @@ export default {
         handleCurrentChange (currentPage) {
             this.$store.commit('dialog/setCurrentPage',currentPage)
             if(this.Search){
-                            
                 this.search()
             }else{
                 this.getDialog()                
@@ -811,7 +816,7 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.dialogVisible=false
-                    this.$message.success(res.data.data.msg);
+                    this.$message.success('已通过');
                     this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
                             i.checkStatus='已通过'
@@ -838,7 +843,7 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.dialogVisible=false
-                    this.$message.success(res.data.data.msg);
+                    this.$message.success('已拒绝');
                     this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
                             i.checkStatus='未通过'

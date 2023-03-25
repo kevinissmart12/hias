@@ -71,20 +71,18 @@ router.post('/register', function (req, res, next) {
 //name password 
 //无需token
 router.post('/login', function (req, res, next) {
-
+    //req.body为从前端传递来的数据
     const userInfo = req.body
-
+    //调用数据库，并用user对象下searchName方法，根据name查找字段
     db.query(user.searchName(userInfo.name), function (err, result) {
+        //错误，返回error
         if (err) return res.send(err)
-
+        //查找到0条数据
         if (result.length == 0) return res.send({ status: 400, data: { msg: '该用户没有注册' } })
-
         //判断密码是否相等
         let comparedResult = bcrypt.compareSync(userInfo.password, result[0].password)
-
+        //相等时
         if (comparedResult) {
-
-
             //密码正确应当返回的值
             let results = {
                 'id': result[0].id,
@@ -111,9 +109,7 @@ router.post('/login', function (req, res, next) {
                 }
             })
         }
-
     })
-
 })
 
 //重置密码reset password

@@ -155,17 +155,27 @@ export default {
         deleteProduct(item){
             let data =this.qs.stringify(item)
 
-            this.$axios({
-                url:'/api/products/delete',
-                method:'POST',
-                data:data
-            }).then(res=>{
-                console.log(res.data);
-                if(res.data.status==200){
-                    this.$message.success(res.data.data.msg);
-                }
+            this.$confirm('确认删除数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then((e)=>{
+                this.$axios({
+                    url:'/api/products/delete',
+                    method:'POST',
+                    data:data
+                }).then(res=>{
+                    console.log(res.data);
+                    if(res.data.status==200){
+                        this.$message.success(res.data.data.msg);
+                    }
+                })
+            }).catch((e)=>{
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });          
             })
-
 
         },
         handleSizeChange (size) {

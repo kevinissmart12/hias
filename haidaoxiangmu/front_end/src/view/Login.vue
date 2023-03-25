@@ -26,11 +26,6 @@
             </el-form>
         </div>
 
-
-
-        <!-- <input class="name" type="text" v-model=name>
-        <input class="password" type="password" v-model=password>
-        <button @click="login">登录</button> -->
     </div>
 </template>
 
@@ -57,26 +52,34 @@ export default {
     },
     methods:{
         login(){
-
             //如果name，password为空
             if(this.ruleForm.name==''||this.ruleForm.password==''){
+                //该方法为element-ui中的提示框组件
                 return this.$message.error('账号或密码不为空');
             }
-
+            //长度不匹配
+            if(this.ruleForm.name.length<3||this.ruleForm.name.length>15){
+                return this.$message.error('账号长度在 3 到 15 个字符');
+            }
+            if(this.ruleForm.password.length<6||this.ruleForm.password.length>10){
+                return this.$message.error('账号长度在 6 到 10 个字符');
+            }
+            //对对象进行字符串化，如{a:1,b:2}=>'a=1&b=2'，属于qs组件中的一个方法
             let data=this.qs.stringify(this.ruleForm)
-
+            //发起axios请求接口
+            //$axios是挂载在全局的方法
             this.$axios.post('/api/user/login',data).then(res=>{
-
                 if(res.data.status!==200){
                     return this.$message.error(res.data.data.msg);
                 }else{
-                    //jwt存储
+                    //jwt存储,存储与本地存储
                     localStorage.setItem('jwtToken',res.data.data.token)
+                    //跳转登录主界面
                     this.$router.push('/')
                     this.$message.success(res.data.data.msg);
+                    //用于检测当前登陆状态token是否过期，0=>没过期，1=>过期
                     localStorage.setItem('tokenNumber',0)
                 }
-                
             })
         },
         register(){
