@@ -176,37 +176,46 @@ router.post('/resetPwd', function (req, res, next) {
 router.post('/changeDetails',function(req,res,next){
     const userInfo=req.body
 
-    db.query(user.updateUserDetails(userInfo),function(err,result){
+    db.query(user.searchName(userInfo.name),function(err,result){
         if(err)return res.send(err)
 
-        if(result.affectedRows==0)return res.send({status:400,data:{msg:'修改个人信息失败'}})
-
-        db.query(user.searchId(userInfo.id),function(err,result){
+        if(result.length==1&&result[0].id!=userInfo.id)return res.send({status:400,data:{msg:'该名称与他人重复'}})
+        //不重复
+        db.query(user.updateUserDetails(userInfo),function(err,result){
             if(err)return res.send(err)
-
-            if(result.length==0)return res.send({status:400,data:{msg:'Bad Request for User'}})
-
-            //更新token的内容
-            let results = {
-                'id': result[0].id,
-                'name': result[0].name,
-                'mobile': result[0].mobile,
-            }
-            //用results生成token
-            let token = jwt.sign(results, config.secretKey, { expiresIn: config.time })
-
-            //因为更改了用户内容，token必须修改，不然会出现数据不一致的问题
-            res.send({
-                status:200,
-                data:{
-                    msg:'修改成功',
-                    token
+    
+            if(result.affectedRows==0)return res.send({status:400,data:{msg:'修改个人信息失败'}})
+    
+            db.query(user.searchId(userInfo.id),function(err,result){
+                if(err)return res.send(err)
+    
+                if(result.length==0)return res.send({status:400,data:{msg:'Bad Request for User'}})
+    
+                //更新token的内容
+                let results = {
+                    'id': result[0].id,
+                    'name': result[0].name,
+                    'mobile': result[0].mobile,
                 }
+                //用results生成token
+                let token = jwt.sign(results, config.secretKey, { expiresIn: config.time })
+    
+                //因为更改了用户内容，token必须修改，不然会出现数据不一致的问题
+                res.send({
+                    status:200,
+                    data:{
+                        msg:'修改成功',
+                        token
+                    }
+                })
+    
             })
-
+    
         })
-
     })
+
+
+
 
 })
 

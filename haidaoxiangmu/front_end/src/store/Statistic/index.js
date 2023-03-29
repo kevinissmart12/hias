@@ -101,10 +101,18 @@ export default {
         },
 
         setPondsType(state,data){
+            // data.forEach((i,v)=>{
+            //     console.log(i.checkStatus);
+            // })
+            // data.forEach((i,v)=>{
+            //     console.log(i.deleteStatus);
+            // })
             let pondsTypeArr=[]
 
             setTimeout(()=>{
                 data.forEach((i,v)=>{
+                    if(i.checkStatus!=1)return
+                    if(i.deleteStatus!=0)return
                     //新对象
                     let newPondItem={
                         county:i.county,
@@ -197,6 +205,18 @@ export default {
                             i.villageContent=vi.village
                         }
                     })
+                    if(i.freshWaterEstimateArea!=0){
+                        i.freshWaterEstimateArea=i.freshWaterEstimateArea.toFixed(5)
+                    }
+                    if(i.seaEstimateArea!=0){
+                        i.seaEstimateArea=i.seaEstimateArea.toFixed(5)
+                    }
+                    if(i.totalEstimateArea!=0){
+                        i.totalEstimateArea=i.totalEstimateArea.toFixed(5)
+                    }
+                    
+                    
+                    
                 })
 
                 state.pondsType=pondsTypeArr
@@ -208,6 +228,9 @@ export default {
             let productsAOArr=[]
             setTimeout(()=>{
                 data.forEach((i,v)=>{
+                    if(i.checkStatus!=1)return
+                    if(i.deleteStatus!=0)return
+                    
                     //新对象
                     if(!i.product)return
                     let newProductItem={
@@ -262,7 +285,12 @@ export default {
                             i.villageContent=vi.village
                         }
                     })
+
+                    //新增一条数据，用于图表建立
+                    i.villageProduct=i.villageContent+' '+i.product
                 })
+
+
 
                 state.productsAO=productsAOArr
             },100)
@@ -275,6 +303,7 @@ export default {
             state.allProducts=data
         },
         setTownStatus(state,data){
+            // console.log(data);
             let newTownStatus=[]
             let total={
                 id:0,
@@ -284,8 +313,11 @@ export default {
             }
             setTimeout(()=>{
                 //生成新数组
+                
                 state.allProducts.forEach((pi,pv)=>{
-                    if(pi.deleteStatus==1)return
+                    if(pi.deleteStatus!=0)return
+                    if(pi.checkStatus!=1)return
+
                     let newItem={
                         id:pi.id,
                         name:pi.name,
@@ -294,11 +326,14 @@ export default {
                     }
                     newTownStatus.push(newItem)
                 })
+                
                 //新数组循环
                 if(!data){
 
                 }else{
                     data.forEach((i,v)=>{
+                        if(i.checkStatus!=1)return
+                        if(i.deleteStatus!=0)return
                         newTownStatus.forEach((ni,nv)=>{
                             //相等就相加
                             if(ni.id==i.productId){

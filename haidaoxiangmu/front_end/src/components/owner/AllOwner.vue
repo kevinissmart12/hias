@@ -314,6 +314,9 @@ export default {
                 farmerTitle: [
                     { required: true, message: '请输入农民头衔', trigger: 'change' },
                 ],
+                educationLevel:[
+                    { required: true, message: '请选择文化程度', trigger: 'change' },
+                ],
                 departmentId: [
                     { required: true, message: '请输入组织机构代码', trigger: 'change' },
                 ],
@@ -417,12 +420,6 @@ export default {
             if(this.form.mobile==''){
                 return this.$message.error('请输入手机')
             }
-            if(this.form.birthday==''){
-                return this.$message.error('请选择出生日期')
-            }
-            if(this.form.sex==''){
-                return this.$message.error('请选择性别')
-            }
             if(this.form.address==''){
                 return this.$message.error('请输入家庭地址')
             }
@@ -435,14 +432,23 @@ export default {
             if(this.form.village==''){
                 return this.$message.error('请选择所在村')
             }
+            if(this.form.birthday==''){
+                return this.$message.error('请选择出生日期')
+            }
+            if(this.form.sex==''){
+                return this.$message.error('请选择性别')
+            }
+            if(this.form.educationLevel==''){
+                return this.$message.error('请选择文化程度')
+            }
+            if(this.form.departmentId==''){
+                return this.$message.error('请输入组织机构代码')
+            }
             if(this.form.engagedTime==''){
                 return this.$message.error('请输入从业时间')
             }
             if(this.form.farmerTitle==''){
                 return this.$message.error('请输入农民头衔')
-            }
-            if(this.form.departmentId==''){
-                return this.$message.error('请输入组织机构代码')
             }
             if(this.form.creditLevel==''){
                 return this.$message.error('请选择信用等级')
@@ -489,17 +495,14 @@ export default {
             })
         },
         add(){
+            if(this.form.discriminator==''){
+                return this.$message.error('请选择个人/企业养殖')
+            }
             if(this.form.name==''){
                 return this.$message.error('请输入姓名')
             }
             if(this.form.mobile==''){
                 return this.$message.error('请输入手机')
-            }
-            if(this.form.birthday==''){
-                return this.$message.error('请选择出生日期')
-            }
-            if(this.form.sex==''){
-                return this.$message.error('请选择性别')
             }
             if(this.form.address==''){
                 return this.$message.error('请输入家庭地址')
@@ -513,15 +516,25 @@ export default {
             if(this.form.village==''){
                 return this.$message.error('请选择所在村')
             }
+            if(this.form.birthday==''){
+                return this.$message.error('请选择出生日期')
+            }
+            if(this.form.sex==''){
+                return this.$message.error('请选择性别')
+            }
+            if(this.form.educationLevel==''){
+                return this.$message.error('请选择文化程度')
+            }
+            if(this.form.departmentId==''){
+                return this.$message.error('请输入组织机构代码')
+            }
             if(this.form.engagedTime==''){
                 return this.$message.error('请输入从业时间')
             }
             if(this.form.farmerTitle==''){
                 return this.$message.error('请输入农民头衔')
             }
-            if(this.form.departmentId==''){
-                return this.$message.error('请输入组织机构代码')
-            }
+
             if(this.form.creditLevel==''){
                 return this.$message.error('请选择信用等级')
             }

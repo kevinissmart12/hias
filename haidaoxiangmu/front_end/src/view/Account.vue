@@ -26,7 +26,7 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="性别">
-                    <el-select v-model="userInfo.sex" placeholder="请选择">
+                    <el-select v-model="userInfo.sex" placeholder="请选择" clearable>
                         <el-option label="男" value="男"></el-option>
                         <el-option label="女" value="女"></el-option>
                     </el-select>
@@ -110,6 +110,22 @@ export default {
             this.formDisable=!this.formDisable
         },
         save(){
+            //需要对用户名进行判断
+            if(this.userInfo.name==''){
+                return this.$message.error('名称不为空')
+            }
+            if(this.userInfo.mobile==''){
+                return this.$message.error('电话不为空')
+            }
+            if(this.userInfo.sex==''){
+                return this.$message.error('请选择性别')
+            }
+            if(this.userInfo.department==''){
+                return this.$message.error('请输入部门')
+            }
+            if(this.userInfo.birthday==''||this.userInfo.birthday==null){
+                return this.$message.error('请选择出生年月')
+            }
 
             let data=this.qs.stringify(this.userInfo)
 
@@ -119,11 +135,7 @@ export default {
                 data:data
             }).then(res=>{
                 console.log(res);
-                if(res.data.status==401)return
-                if(res.data.status!==200){
-                    return this.$message.error(res.data.data.msg);
-                }else{
-
+                if(res.data.status==200){
                     this.$message.success('修改成功');
                     this.formDisableFn()
                 }

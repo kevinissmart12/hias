@@ -62,7 +62,7 @@ export default {
                 return this.$message.error('账号长度在 3 到 15 个字符');
             }
             if(this.ruleForm.password.length<6||this.ruleForm.password.length>10){
-                return this.$message.error('账号长度在 6 到 10 个字符');
+                return this.$message.error('密码长度在 6 到 10 个字符');
             }
             //对对象进行字符串化，如{a:1,b:2}=>'a=1&b=2'，属于qs组件中的一个方法
             let data=this.qs.stringify(this.ruleForm)

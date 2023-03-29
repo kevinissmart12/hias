@@ -73,6 +73,12 @@ export default {
     methods:{
         open(){
             this.$store.commit('discussion/setDialogVisible',true)
+            this.form.title=''
+            this.form.content=''
+            this.$store.commit('discussion/setTitle','')
+            this.$store.commit('discussion/setContent','')
+
+
         },
         close() {
             this.$store.commit('discussion/setDialogVisible',false)
@@ -89,7 +95,12 @@ export default {
                 rid:this.Rid,
                 name:this.Name,
                 id:this.UpdateId,
-                
+            }
+            if(this.ShowReply==0||this.ShowReply==1){
+                if(tempData.title=='')return this.$message.warning('标题不为空')
+                if(tempData.content==''||tempData.content=='<p><br></p>')return this.$message.warning('内容不为空')
+            }else if(this.ShowReply==2||this.ShowReply==3){
+                if(tempData.content==''||tempData.content=='<p><br></p>')return this.$message.warning('内容不为空')
             }
             let data=this.qs.stringify(tempData)
 
@@ -245,6 +256,7 @@ export default {
             }else if(n==2){
                 this.title='添加回复'
                 this.buttonTitle='发起回复'
+                this.$store.commit('discussion/setContent','')
             }else if(n==3){
                 this.title='修改回复'
             }

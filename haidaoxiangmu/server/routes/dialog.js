@@ -65,7 +65,9 @@ router.post('/pass',function(req,res,next){
                         status:200,
                         data:{
                             msg:'当前对象已被删除',
-                        }
+                        },
+                        deleteStatus:1
+
                     })
                 }else{
                     passFn()
@@ -84,7 +86,9 @@ router.post('/pass',function(req,res,next){
                         status:200,
                         data:{
                             msg:'当前对象已被删除',
-                        }
+                        },
+                        deleteStatus:1
+
                     })
                 }else{
                     passFn()
@@ -103,7 +107,9 @@ router.post('/pass',function(req,res,next){
                         status:200,
                         data:{
                             msg:'当前对象已被删除',
-                        }
+                        },
+                        deleteStatus:1
+
                     })
                 }else{
                     passFn()
@@ -556,7 +562,8 @@ router.post('/deny',function(req,res,next){
                         status:200,
                         data:{
                             msg:'当前对象已被删除',
-                        }
+                        },
+                        deleteStatus:1
                     })
                 }else{
                     denyFn()
@@ -576,7 +583,8 @@ router.post('/deny',function(req,res,next){
                         status:200,
                         data:{
                             msg:'当前对象已被删除',
-                        }
+                        },
+                        deleteStatus:1
                     })
                 }else{
                     denyFn()
@@ -595,7 +603,8 @@ router.post('/deny',function(req,res,next){
                         status:200,
                         data:{
                             msg:'当前对象已被删除',
-                        }
+                        },
+                        deleteStatus:1
                     })
                 }else{
                     denyFn()

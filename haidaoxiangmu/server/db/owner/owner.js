@@ -53,7 +53,7 @@ const Ponds={
     },
     //模糊搜索
     //条件有countytown,village,discriminator,name,checkStatus
-    //其中 除了name外，都是精准搜索
+    //其中 除了name外，都是精准搜索 
     search(option){
         const sql=`select * from owner where name like '%${option.name}%' and county like '%${option.county}%' and town like '%${option.town}%' and village like '%${option.village}%' and discriminator like '%${option.discriminator}%' and creditLevel like '%${option.creditLevel}%' and checkStatus like '%${option.checkStatus}%' and deleteStatus like '%${option.deleteStatus}%'`
         return sql

@@ -50,7 +50,7 @@ export default {
             currentPage:1,
             pagesize:10,
             tempTableData:[],
-            tableHead:'舟山省',
+            tableHead:'舟山市',
         }
     },
     methods:{

@@ -66,7 +66,7 @@ export default {
                 return this.$message.error('账号长度在 3 到 15 个字符');
             }
             if(this.ruleForm.password.length<6||this.ruleForm.password.length>10){
-                return this.$message.error('账号长度在 6 到 10 个字符');
+                return this.$message.error('密码长度在 6 到 10 个字符');
             }
             let data=this.qs.stringify(this.ruleForm)
             this.$axios({

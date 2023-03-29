@@ -40,11 +40,22 @@ const Dialog={
 
 
     search(option){
-        const sql=`select * from dialog where  uid like '%${option.uid}%' and  type like '%${option.type}%' and op_obj like '%${option.op_obj}%' limit ${option.front},${option.end-option.front}`
+        let sql=``
+        if(option.uid==''){
+            sql=`select * from dialog where  uid like '%${option.uid}%' and  type like '%${option.type}%' and op_obj like '%${option.op_obj}%' limit ${option.front},${option.end-option.front}`
+        }else{
+            sql=`select * from dialog where  uid = '${option.uid}' and  type like '%${option.type}%' and op_obj like '%${option.op_obj}%' limit ${option.front},${option.end-option.front}`
+        }
         return sql
     },
     searchLength(option){
-        const sql=`select count(*) as slength from dialog where uid like '%${option.uid}%' and type like '%${option.type}%' and op_obj like '%${option.op_obj}%'`
+        let sql=``
+        if(option.uid==''){
+            sql=`select count(*) as slength from dialog where uid like '%${option.uid}%' and type like '%${option.type}%' and op_obj like '%${option.op_obj}%'`
+            
+        }else{
+            sql=`select count(*) as slength from dialog where uid = '${option.uid}' and type like '%${option.type}%' and op_obj like '%${option.op_obj}%'`
+        }
         return sql
     },
 

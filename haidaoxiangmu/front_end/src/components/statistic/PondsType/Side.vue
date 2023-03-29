@@ -9,7 +9,7 @@
                     :fields="json_fields"
                     type="xls"
                     worksheet="My Worksheet"
-                    name="用户信息采样数据"
+                    name="养殖池塘类型统计"
                     style="float: right; padding: 3px 0"
                 >
                     <el-button @click="exportExcel" style="float: right; padding: 3px 0" type="text">导出统计列表</el-button>

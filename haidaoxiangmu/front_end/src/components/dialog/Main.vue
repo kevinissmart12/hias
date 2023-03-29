@@ -816,6 +816,10 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.dialogVisible=false
+                    if(res.data.deleteStatus==1){
+                        return this.$message.warning('当前对象已被删除');
+                    }
+                    
                     this.$message.success('已通过');
                     this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){
@@ -843,6 +847,9 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.dialogVisible=false
+                    if(res.data.deleteStatus==1){
+                        return this.$message.warning('当前对象已被删除');
+                    }
                     this.$message.success('已拒绝');
                     this.TableData.forEach((i,v)=>{
                         if(i.id==this.CheckingData.id){

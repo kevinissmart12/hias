@@ -199,13 +199,13 @@ export default {
             if(this.form.imgUrl==''){
                 return this.$message.warning('请上传图片');
             }
-            if(this.form.description==''){
+            if(this.form.description==''||this.form.description=='<p><br></p>'){
                 return this.$message.warning('请填写描述');
             }
-            if(this.form.breedTech==''){
+            if(this.form.breedTech==''||this.form.breedTech=='<p><br></p>'){
                 return this.$message.warning('请填写养殖技术');
             }
-            if(this.form.diseases==''){
+            if(this.form.diseases==''||this.form.diseases=='<p><br></p>'){
                 return this.$message.warning('请填写病害');
             }
 

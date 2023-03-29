@@ -2,7 +2,7 @@
     <div class="side">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>养殖池塘类型统计</span>
+                <span>地区养殖情况统计</span>
                 <download-excel
                     class="export-excel-wrapper"
                     :data="json_data"
@@ -93,7 +93,7 @@ export default {
             json_data:[
 
             ],
-            tableHead:'舟山省',
+            tableHead:'舟山市',
         }
     },
     methods:{

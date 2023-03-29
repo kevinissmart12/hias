@@ -91,6 +91,7 @@ export default {
                 所在区:"countyContent",
                 所在镇:"townContent",
                 所在村:"villageContent",
+                地区养殖品种:"villageProduct",
                 养殖品种:"product",
                 养殖面积:"area",
                 年产量:"productOutput",

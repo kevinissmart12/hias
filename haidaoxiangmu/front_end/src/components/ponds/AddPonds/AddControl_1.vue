@@ -17,7 +17,7 @@
         </el-button>
         <!-- 对该池塘添加owner和product,从数据库中选 -->
         <el-form ref="form" :model="form" :rules="rules"  label-width="100px">
-            <el-form-item label="海水/淡水" prop="pondsType">
+            <el-form-item label="池塘类型" prop="pondsType">
                 <el-select v-model="form.pondsType" placeholder="请选择海水/淡水养殖" @change='updateForm(form.pondsType,"setPondsType")'>
                     <el-option
                         label="海水养殖"
@@ -355,7 +355,7 @@ export default {
 
         //添加ponds
         addPonds(){
-            if(this.form.pondsType==''){
+            if(this.form.pondsType==''||this.form.pondsType==undefined){
                 return this.$message.error('请选择池塘类型')
             }
             if(this.form.number==''){
@@ -379,7 +379,7 @@ export default {
             if(this.form.area==''){
                 return this.$message.error('请输入养殖面积')
             }
-            if(this.form.productOutput==''){
+            if(this.form.productOutput==''||this.form.productOutput==undefined){
                 return this.$message.error('请输入年产量')
             }
             this.form.polygon=this.DrawingPolygon

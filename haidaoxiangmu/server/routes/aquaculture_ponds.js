@@ -11,6 +11,7 @@ var products = require('../db/aquaculture_products/aquaculture_products')
 //dialog 
 var dialog =require('../db/dialog/dialog')
 
+
 //增加新的池塘
 //输入除了id,ownerId以外的其他信息
 //需要token
@@ -409,7 +410,9 @@ router.post('/search',function(req,res,next){
 
     //补全没有的字段
     let finalPondsInfo={
+        owner:pondsInfo.owner?pondsInfo.owner:'',
         ownerId:pondsInfo.ownerId?pondsInfo.ownerId:'',
+        product:pondsInfo.product?pondsInfo.product:'',
         productId:pondsInfo.productId?pondsInfo.productId:'',
         county:pondsInfo.county?pondsInfo.county:'',
         town:pondsInfo.town?pondsInfo.town:'',

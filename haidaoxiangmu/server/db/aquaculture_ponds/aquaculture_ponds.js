@@ -76,7 +76,20 @@ const Ponds={
 
 
     search(option){
-        const sql=`select * from aquaculture_ponds where ownerId like '%${option.ownerId}%' and productId like '%${option.productId}%' and county like '%${option.county}%' and town like '%${option.town}%' and village like '%${option.village}%' and checkStatus like '%${option.checkStatus}%' and deleteStatus like '%${option.deleteStatus}%'`
+        const sql1=`select * from aquaculture_ponds where `
+        const sql2=` and county like '%${option.county}%' and town like '%${option.town}%' and village like '%${option.village}%' and checkStatus like '%${option.checkStatus}%' and deleteStatus like '%${option.deleteStatus}%'`
+        let sql3=``
+        if(option.ownerId==''&&option.productId==''){
+            sql3=`ownerId like '%${option.ownerId}%' and productId like '%${option.productId}%'`
+        }else if(option.ownerId!=''&&option.productId==''){
+            sql3=`ownerId = '${option.ownerId}' and productId like '%${option.productId}%'`
+        }else if(option.ownerId==''&&option.productId!=''){
+            sql3=`ownerId like '%${option.ownerId}%' and productId = '${option.productId}'`
+        }else if(option.ownerId!=''&&option.productId!=''){
+            sql3=`ownerId = '${option.ownerId}' and productId = '${option.productId}'`
+        }
+        const sql=sql1+sql3+sql2
+        // const sql=`select * from aquaculture_ponds where ownerId = '${option.ownerId}' and productId = '${option.productId}' and county like '%${option.county}%' and town like '%${option.town}%' and village like '%${option.village}%' and checkStatus like '%${option.checkStatus}%' and deleteStatus like '%${option.deleteStatus}%'`
         return sql
     },
 
