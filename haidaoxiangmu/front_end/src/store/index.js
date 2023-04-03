@@ -16,7 +16,15 @@ import statistic from './Statistic/index'
 
 
 export default new Vuex.Store({
-
+  state:{
+    //全局信息
+    USERINFO:{}
+  },
+  mutations:{
+    setUSERINFO(state,data){
+      state.USERINFO=data
+    }
+  },
   modules: {
     allProducts,
     allOwner,

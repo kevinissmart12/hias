@@ -593,7 +593,10 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then((e)=>{
-
+                if(this.IsAdmin==1){
+                    this.$store.commit('allOwner/deleteItem',item.id)
+                    this.tempTableData=this.AllOwner.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
+                }
                 //后端
                 this.$axios({
                     url:'/api/owner/delete',
@@ -602,10 +605,9 @@ export default {
                 }).then(res=>{
                     console.log(res);
                     if(res.data.status==200){
-                        this.$message.success('删除成功');
+                        this.$message.success(res.data.data.msg);
                         //前端删除
                         //把store里的数据删除
-                        this.$store.commit('allOwner/deleteItem',item.id)
                     }
                 })
             }).catch((e)=>{
@@ -758,6 +760,9 @@ export default {
         },
         Village(){
             return this.$store.state.allOwner.villageData
+        },
+        IsAdmin(){
+            return this.$store.state.USERINFO.isAdmin
         }
     },
     watch:{

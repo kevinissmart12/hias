@@ -30,6 +30,9 @@ export default {
                 state.tableData=arr
             // },100)
         },
+        deleteProduct(state,id){
+            state.tableData=state.tableData.filter(item=>item.id!=id)
+        },
         
     }
 

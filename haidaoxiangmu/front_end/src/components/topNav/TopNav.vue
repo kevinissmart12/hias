@@ -91,6 +91,7 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.userInfo=res.data.data.data
+                    this.$store.commit('setUSERINFO',this.userInfo)
                 }
                 
             })

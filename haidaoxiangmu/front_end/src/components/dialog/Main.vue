@@ -480,7 +480,10 @@
             <span slot="footer" class="dialog-footer">
                 <el-button v-if="(CheckingData.checkStatus=='未通过'||CheckingData.checkStatus=='未审核')&&CheckingData.type!='删除'" type="primary" @click="pass()">通  过</el-button>
                 <el-button v-if="(CheckingData.checkStatus=='已通过'||CheckingData.checkStatus=='未审核')&&CheckingData.type!='删除'" type="danger" @click="deny()">不通过</el-button>
-                <el-button v-if="CheckingData.type=='删除'" type="primary" @click="restore">还  原</el-button>
+                
+                <el-button v-if="CheckingData.type=='删除'&&CheckingData.checkStatus=='已通过'" type="primary" @click="restore">还  原</el-button>
+                <el-button v-if="CheckingData.type=='删除'&&(CheckingData.checkStatus=='未审核'||CheckingData.checkStatus=='未通过')" type="danger" @click="comfirmDelete">确认删除</el-button>
+                <el-button v-if="CheckingData.type=='删除'&&CheckingData.checkStatus=='未审核'" type="primary" @click="denyDelete">不通过删除</el-button>
 
             </span>
         </el-dialog>
@@ -877,6 +880,52 @@ export default {
                     this.dialogVisible=false
                     this.$message.success('已还原');
                     this.$store.commit('dialog/deleteRestoredData')
+                }
+            })
+        },
+        comfirmDelete(){
+            let data=this.qs.stringify({
+                id:this.CheckingData.id,
+                checkStatus:1,
+                op_obj:this.CheckingData.op_obj,
+                op_obj_id:this.CheckingData.op_obj_id
+            })
+            this.$axios({
+                url:'/api/dialog/confirmDelete',
+                method:'POST',
+                data:data
+            }).then(res=>{
+                console.log(res.data);
+                if(res.data.status==200){
+                    this.dialogVisible=false
+                    this.$message.warning(res.data.data.msg);
+                    this.TableData.forEach((i,v)=>{
+                        if(i.id==this.CheckingData.id){
+                            i.checkStatus='已通过'
+                        }
+                    })
+                }
+            })
+        },
+        denyDelete(){
+            let data=this.qs.stringify({
+                id:this.CheckingData.id,
+                checkStatus:2,
+            })
+            this.$axios({
+                url:'/api/dialog/denyDelete',
+                method:'POST',
+                data:data
+            }).then(res=>{
+                console.log(res.data);
+                if(res.data.status==200){
+                    this.dialogVisible=false
+                    this.$message.warning(res.data.data.msg);
+                    this.TableData.forEach((i,v)=>{
+                        if(i.id==this.CheckingData.id){
+                            i.checkStatus='未通过'
+                        }
+                    })
                 }
             })
         }

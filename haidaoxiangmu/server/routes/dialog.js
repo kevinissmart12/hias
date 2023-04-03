@@ -866,6 +866,138 @@ router.post('/restore',function(req,res,next){
     })
 
 })
+router.post('/confirmDelete',function(req,res,next){
+    const checkingData=req.body
+
+    //先修改dialog表，令checkStatus为1，表示管理员通过此条删除请求
+    db.query(dialog.update(checkingData),function(err,result){
+        if(err)return res.send(err)
+
+        if(result.affectedRows==0)return res.send({status:400,data:{msg:'修改checkStatus失败'}})
+        
+        //再修改其他表
+        if(checkingData.op_obj==0){
+            //池塘
+            db.query(ponds.delete(checkingData.op_obj_id),function(err,result){
+                if(err)return res.send(err)
+
+                if(result.affectedRows==0)return res.send({status:400,data:{msg:'删除失败0'}})
+
+                res.send({
+                    status:200,
+                    data:{
+                        msg:'已删除'
+                    }
+                })
+            })
+        }else if(checkingData.op_obj==1){
+            //拥有者
+            db.query(owner.delete(checkingData.op_obj_id),function(err,result){
+                if(err)return res.send(err)
+
+                if(result.affectedRows==0)return res.send({status:400,data:{msg:'删除失败1'}})
+
+                db.query(ponds.getByOwnerId(checkingData.op_obj_id),function(err,result){
+                    if(err)return res.send(err)
+    
+                    if(result.length==0){
+                        res.send({
+                            status:200,
+                            data:{
+                                msg:'删除成功,该拥有者没有池塘'
+                            }
+                        })
+                    }else{
+                        //update ponds
+                        //获取池塘id
+                        let arr=Array.from(result)
+                        arr.forEach((i,v)=>{
+                            //ownerId设置为空
+                            db.query(ponds.updateOwnerId('null',i.id),function(err,result){
+                                if(err)return res.send(err)
+                                if(result.affectedRows==0)return res.send({status:400,data:{msg:'更新错误'}})
+                            })
+    
+                        })
+    
+                        setTimeout(()=>{
+                            res.send({
+                                status:200,
+                                data:{
+                                    msg:`删除成功,该拥有者有${arr.length}个池塘`
+                                }
+                            })
+                        },200)
+    
+                    }
+                })
+
+            })
+        }else if(checkingData.op_obj==2){
+            //水产品
+            db.query(products.delete(checkingData.op_obj_id),function(err,result){
+                if(err)return res.send(err)
+
+                if(result.affectedRows==0)return res.send({status:400,data:{msg:'删除失败2'}})
+
+                db.query(ponds.getByProductId(checkingData.op_obj_id),function(err,result){
+                    if(err)return res.send(err)
+    
+                    if(result.length==0){
+                        res.send({
+                            status:200,
+                            data:{
+                                msg:'删除成功,该水产没有投入过任何池塘'
+                            }
+                        })
+                    }else{
+                        //update ponds
+                        //获取池塘id
+                        let arr=Array.from(result)
+                        arr.forEach((i,v)=>{
+                            //productId设置为空
+                            db.query(ponds.updateProductId('null',i.id),function(err,result){
+                                if(err)return res.send(err)
+                                if(result.affectedRows==0)return res.send({status:400,data:{msg:'更新错误'}})
+                            })
+    
+                        })
+    
+                        setTimeout(()=>{
+                            res.send({
+                                status:200,
+                                data:{
+                                    msg:`删除成功,该水产投入过${arr.length}个池塘`
+                                }
+                            })
+                        },200)
+    
+                    }
+                })
+
+            })
+        }
+    })
+
+})
+router.post('/denyDelete',function(req,res,next){
+    const checkingData=req.body
+
+    //先修改dialog表，令checkStatus为1，表示管理员通过此条删除请求
+    db.query(dialog.update(checkingData),function(err,result){
+        if(err)return res.send(err)
+
+        if(result.affectedRows==0)return res.send({status:400,data:{msg:'修改checkStatus失败'}})
+        
+        res.send({
+            status:200,
+            data:{
+                msg:'已拒绝删除'
+            }
+        })
+    })
+
+})
 
 router.post('/search',function(req,res,next){
     const dialogInfo=req.body

@@ -222,11 +222,78 @@ router.post('/delete',function(req,res,next){
     const id= req.body.id
     let userInfo=req.user
     const ownerInfo=req.body
-
-    db.query(owner.delete(id),function(err,result){
-        if(err)return res.send(err)
-
-        if(result.affectedRows==0)return res.send({status:400,data:{msg:"删除拥有者失败"}})
+    if(userInfo.isAdmin==1){
+        ownerInfo.checkStatus=1
+    }else{
+        ownerInfo.checkStatus=0
+    }
+    if(userInfo.isAdmin==1){
+        db.query(owner.delete(id),function(err,result){
+            if(err)return res.send(err)
+    
+            if(result.affectedRows==0)return res.send({status:400,data:{msg:"删除拥有者失败"}})
+            //对dialog数据库操作
+            //添加/修改/删除type分别对应0/1/2
+            //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
+            //checkStatus删除全部为通过1，
+            //checkResult，当前为添加水产品操作，分别分为管理员添加和普通用户添加，
+            //old_obj,前端传来的item
+            //new_obj,当前为添加操作，为空
+            let dialogInfo={
+                uid:userInfo.id,
+                type:2,
+                op_obj:1,
+                checkStatus:userInfo.isAdmin==1?1:0,
+                checkResult:userInfo.isAdmin==1?'管理员直接删除':'用户请求删除',
+                time:new Date(),
+                old_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
+                new_obj:'',
+            }
+            db.query(dialog.add(dialogInfo),function(err,result){
+                if(err)return res.send(err)
+    
+                if(result.affectedRows==0) console.log({status:400,data:{msg:"添加日志失败"}})
+    
+                db.query(ponds.getByOwnerId(id),function(err,result){
+                    if(err)return res.send(err)
+    
+                    if(result.length==0){
+                        res.send({
+                            status:200,
+                            data:{
+                                msg:'删除成功,该拥有者没有池塘'
+                            }
+                        })
+                    }else{
+                        //update ponds
+                        //获取池塘id
+                        let arr=Array.from(result)
+                        arr.forEach((i,v)=>{
+                            //ownerId设置为空
+                            db.query(ponds.updateOwnerId('null',i.id),function(err,result){
+                                if(err)return res.send(err)
+                                if(result.affectedRows==0)return res.send({status:400,data:{msg:'更新错误'}})
+                            })
+    
+                        })
+    
+                        setTimeout(()=>{
+                            res.send({
+                                status:200,
+                                data:{
+                                    msg:`删除成功,该拥有者有${arr.length}个池塘`
+                                }
+                            })
+                        },200)
+    
+                    }
+                })
+            })
+    
+    
+    
+        })
+    }else{
         //对dialog数据库操作
         //添加/修改/删除type分别对应0/1/2
         //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
@@ -238,8 +305,8 @@ router.post('/delete',function(req,res,next){
             uid:userInfo.id,
             type:2,
             op_obj:1,
-            checkStatus:1,
-            checkResult:userInfo.isAdmin==1?'管理员直接删除':'用户删除',
+            checkStatus:userInfo.isAdmin==1?1:0,
+            checkResult:userInfo.isAdmin==1?'管理员直接删除':'用户请求删除',
             time:new Date(),
             old_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
             new_obj:'',
@@ -249,45 +316,79 @@ router.post('/delete',function(req,res,next){
 
             if(result.affectedRows==0) console.log({status:400,data:{msg:"添加日志失败"}})
 
-            db.query(ponds.getByOwnerId(id),function(err,result){
-                if(err)return res.send(err)
-
-                if(result.length==0){
-                    res.send({
-                        status:200,
-                        data:{
-                            msg:'删除成功,该拥有者没有池塘'
-                        }
-                    })
-                }else{
-                    //update ponds
-                    //获取池塘id
-                    let arr=Array.from(result)
-                    arr.forEach((i,v)=>{
-                        //ownerId设置为空
-                        db.query(ponds.updateOwnerId('null',i.id),function(err,result){
-                            if(err)return res.send(err)
-                            if(result.affectedRows==0)return res.send({status:400,data:{msg:'更新错误'}})
-                        })
-
-                    })
-
-                    setTimeout(()=>{
-                        res.send({
-                            status:200,
-                            data:{
-                                msg:`删除成功,该拥有者有${arr.length}个池塘`
-                            }
-                        })
-                    },200)
-
+            res.send({
+                status:200,
+                data:{
+                    msg:'已请求删除操作'
                 }
             })
         })
+    }
+    // db.query(owner.delete(id),function(err,result){
+    //     if(err)return res.send(err)
+
+    //     if(result.affectedRows==0)return res.send({status:400,data:{msg:"删除拥有者失败"}})
+    //     //对dialog数据库操作
+    //     //添加/修改/删除type分别对应0/1/2
+    //     //池塘/拥有者/水产品 三种操作对象分别对应0/1/2
+    //     //checkStatus删除全部为通过1，
+    //     //checkResult，当前为添加水产品操作，分别分为管理员添加和普通用户添加，
+    //     //old_obj,前端传来的item
+    //     //new_obj,当前为添加操作，为空
+    //     let dialogInfo={
+    //         uid:userInfo.id,
+    //         type:2,
+    //         op_obj:1,
+    //         checkStatus:1,
+    //         checkResult:userInfo.isAdmin==1?'管理员直接删除':'用户删除',
+    //         time:new Date(),
+    //         old_obj:encodeURIComponent(JSON.stringify(ownerInfo)),
+    //         new_obj:'',
+    //     }
+    //     db.query(dialog.add(dialogInfo),function(err,result){
+    //         if(err)return res.send(err)
+
+    //         if(result.affectedRows==0) console.log({status:400,data:{msg:"添加日志失败"}})
+
+    //         db.query(ponds.getByOwnerId(id),function(err,result){
+    //             if(err)return res.send(err)
+
+    //             if(result.length==0){
+    //                 res.send({
+    //                     status:200,
+    //                     data:{
+    //                         msg:'删除成功,该拥有者没有池塘'
+    //                     }
+    //                 })
+    //             }else{
+    //                 //update ponds
+    //                 //获取池塘id
+    //                 let arr=Array.from(result)
+    //                 arr.forEach((i,v)=>{
+    //                     //ownerId设置为空
+    //                     db.query(ponds.updateOwnerId('null',i.id),function(err,result){
+    //                         if(err)return res.send(err)
+    //                         if(result.affectedRows==0)return res.send({status:400,data:{msg:'更新错误'}})
+    //                     })
+
+    //                 })
+
+    //                 setTimeout(()=>{
+    //                     res.send({
+    //                         status:200,
+    //                         data:{
+    //                             msg:`删除成功,该拥有者有${arr.length}个池塘`
+    //                         }
+    //                     })
+    //                 },200)
+
+    //             }
+    //         })
+    //     })
 
 
 
-    })
+    // })
 })
 
 

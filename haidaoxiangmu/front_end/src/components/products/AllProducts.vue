@@ -160,6 +160,10 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then((e)=>{
+                if(this.IsAdmin==1){
+                    this.$store.commit('allProducts/deleteProduct',item.id)
+                    this.tempTableData=this.TableData.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
+                }
                 this.$axios({
                     url:'/api/products/delete',
                     method:'POST',
@@ -208,6 +212,9 @@ export default {
         },
         ID(){
             return this.$route.query.id
+        },
+        IsAdmin(){
+            return this.$store.state.USERINFO.isAdmin
         }
     }
 }

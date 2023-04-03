@@ -139,6 +139,8 @@ export default {
             })
         },
         deleteSelect(item){
+            //获取是否为管理员
+            
             let data=this.qs.stringify(item)
             // console.log(data);
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -148,9 +150,10 @@ export default {
             }).then((e)=>{
                 //前端删除
                 //把store里的数据删除
-                this.$store.commit('ponds/deletePonds',item.id)
-                this.tempTableData=this.AllPonds.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
-                
+                if(this.IsAdmin==1){
+                    this.$store.commit('ponds/deletePonds',item.id)
+                    this.tempTableData=this.AllPonds.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
+                }
                 //后端
                 this.$axios({
                     url:'/api/ponds/delete',
@@ -159,7 +162,7 @@ export default {
                 }).then(res=>{
                     console.log(res);
                     if(res.data.status==200){
-                        this.$message.success('删除成功');
+                        this.$message.success(res.data.data.msg);
                     }
                 })
             }).catch((e)=>{
@@ -196,6 +199,9 @@ export default {
         },
         Id(){
             return this.$route.query.id
+        },
+        IsAdmin(){
+            return this.$store.state.USERINFO.isAdmin
         }
     },
     watch:{
