@@ -73,7 +73,8 @@ router.post('/add',function(req,res,next){
                 res.send({
                     status:200,
                     data:{
-                        msg:'添加成功'
+                        msg:'添加成功',
+                        insertId:ownerResult.insertId
                     }
                 })
             })

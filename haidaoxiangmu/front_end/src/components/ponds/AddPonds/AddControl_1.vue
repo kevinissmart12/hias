@@ -391,7 +391,11 @@ export default {
                 data:data
             }).then(res=>{
                 if(res.data.status==200){
-                    this.$message.success('添加成功');
+                    if(this.IsAdmin==1){
+                        this.$message.success('添加成功');
+                    }else{
+                        this.$message.success('已发送添加请求');
+                    }
                     //更改polygons中的新添加的池塘id
                     this.$store.commit('ponds/setId','')
                     this.$store.commit('ponds/changeNormalId',res.data.data.id)
@@ -451,7 +455,11 @@ export default {
                 data:data
             }).then(res=>{
                 if(res.data.status==200){
-                    this.$message.success('更新成功');
+                    if(this.IsAdmin==1){
+                        this.$message.success('更新成功');
+                    }else{
+                        this.$message.success('已发送更新请求');
+                    }
 
                     this.$router.push({
                         path:'/',
@@ -678,6 +686,9 @@ export default {
         Id(n){
             this.form.id=n
         },
+        IsAdmin(){
+            return this.$store.state.USERINFO.isAdmin
+        }
     },
     created(){
         this.getOwner()

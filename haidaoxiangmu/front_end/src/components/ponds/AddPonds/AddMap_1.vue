@@ -331,15 +331,20 @@ export default {
         afterJump(){
             
             setTimeout(()=>{
-                if(this.$route.query){
+                if(this.$route.query.id){
+                    // console.log(this.$route.query.id);
                     //如果是从查看过来的就需要获取polygons，然后循环查找
+                    let exist=false
                     this.Polygons.forEach((i,v)=>{
                         if(i.id==this.$route.query.id){
                             this.infoWindowOpen(i)
-                            
+                            exist=true
                             return 
                         }
                     })
+                    if(!exist){
+                        this.$message.warning('当前池塘还在审核')
+                    }
                 }
             },300)
         },

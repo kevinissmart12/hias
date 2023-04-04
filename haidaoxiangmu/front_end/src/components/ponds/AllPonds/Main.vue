@@ -140,37 +140,64 @@ export default {
         },
         deleteSelect(item){
             //获取是否为管理员
-            
             let data=this.qs.stringify(item)
-            // console.log(data);
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then((e)=>{
-                //前端删除
-                //把store里的数据删除
-                if(this.IsAdmin==1){
-                    this.$store.commit('ponds/deletePonds',item.id)
-                    this.tempTableData=this.AllPonds.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
-                }
-                //后端
-                this.$axios({
-                    url:'/api/ponds/delete',
-                    method:"POST",
-                    data:data,
-                }).then(res=>{
-                    console.log(res);
-                    if(res.data.status==200){
-                        this.$message.success(res.data.data.msg);
+            if(this.IsAdmin==1){
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((e)=>{
+                    //前端删除
+                    //把store里的数据删除
+                    if(this.IsAdmin==1){
+                        this.$store.commit('ponds/deletePonds',item.id)
+                        this.tempTableData=this.AllPonds.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
                     }
+                    //后端
+                    this.$axios({
+                        url:'/api/ponds/delete',
+                        method:"POST",
+                        data:data,
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.data.status==200){
+                            this.$message.success(res.data.data.msg);
+                        }
+                    })
+                }).catch((e)=>{
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 })
-            }).catch((e)=>{
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
-            })
+            }else{
+                this.$confirm('此操作将请求删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((e)=>{
+                    //前端删除
+                    //把store里的数据删除
+                    //后端
+                    this.$axios({
+                        url:'/api/ponds/delete',
+                        method:"POST",
+                        data:data,
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.data.status==200){
+                            this.$message.success(res.data.data.msg);
+                        }
+                    })
+                }).catch((e)=>{
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
+                })
+            }
+
+
         },
         add(){
             this.$router.push({

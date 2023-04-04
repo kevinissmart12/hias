@@ -17,13 +17,16 @@
 
                     <el-table
                         :data="tempTableData"
-                        style="width: 100%">
+                        style="width: 100%"
+                        :row-class-name="tableRowClassName"
+                        >
                         <el-table-column
                             :prop="item.prop"
                             :label="item.label"
                             :width="item.width"
                             v-for="(item,index) in tableItem" 
                             :key="index"
+                            ref="table_column"
                         >
                             <template slot-scope="scope">
                                 <img v-if="item.prop=='imgUrl'" :src="scope.row.imgUrl" alt="" width="90">
@@ -370,6 +373,7 @@ export default {
             ],
             townOption:[],
             villageOption:[],
+            saved:false,
         }
     },
     methods:{
@@ -477,22 +481,42 @@ export default {
                 }
             }
             // update
-            let data=this.qs.stringify(this.form)
+            if(this.IsAdmin==1){
+                let data=this.qs.stringify(this.form)
 
-            this.$axios({
-                url:'/api/owner/update',
-                method:"POST",
-                data:data
-            }).then(res=>{
-                console.log(res);
-                if(res.data.status==200){
-                    this.formShow=false
-                    this.$message.success('修改成功');
-                    //刷新
-                    window.location.reload();
-                    this.$router.go(0);
-                }
-            })
+                this.$axios({
+                    url:'/api/owner/update',
+                    method:"POST",
+                    data:data
+                }).then(res=>{
+                    console.log(res);
+                    if(res.data.status==200){
+                        this.formShow=false
+                        this.$message.success('修改成功');
+                        this.$store.commit('allOwner/updateItem',this.form)
+                        setTimeout(()=>{
+                            this.saved=true
+                        },150)
+                        
+                    }
+                })
+            }else{
+                let data=this.qs.stringify(this.form)
+
+                this.$axios({
+                    url:'/api/owner/update',
+                    method:"POST",
+                    data:data
+                }).then(res=>{
+                    console.log(res);
+                    if(res.data.status==200){
+                        this.formShow=false
+                        this.$message.success('已发起修改请求');
+                        
+                    }
+                })
+            }
+
         },
         add(){
             if(this.form.discriminator==''){
@@ -561,63 +585,110 @@ export default {
                     return this.$message.error('请输入特色产品')
                 }
             }
-            
-            
 
             let data=this.qs.stringify(this.form)
 
-            this.$axios({
-                url:'/api/owner/add',
-                method:"POST",
-                data:data
-            }).then(res=>{
-                console.log(res);
-                if(res.data.status==200){
-                    this.formShow=false
-                    //上传给前端store
-                    this.$store.commit('allOwner/addItem',this.form)
-                    this.$message.success('添加成功');
-                    //刷新
-                    window.location.reload();
-                    this.$router.go(0);
+            if(this.IsAdmin==1){
+                this.$axios({
+                    url:'/api/owner/add',
+                    method:"POST",
+                    data:data
+                }).then(res=>{
+                    console.log(res.data);
+                    if(res.data.status==200){
+                        this.formShow=false
+                        this.form.id=res.data.data.insertId
+                        //上传给前端store
+                        this.$store.commit('allOwner/addItem',this.form)
+                        this.$message.success('添加成功');
+                        //刷新
+                        // window.location.reload();
+                        // this.$router.go(0);
 
-                }
-            })
+                    }
+                })
+            }else{
+                this.$axios({
+                    url:'/api/owner/add',
+                    method:"POST",
+                    data:data
+                }).then(res=>{
+                    console.log(res);
+                    if(res.data.status==200){
+                        this.formShow=false
+                        //上传给前端store
+                        // this.$store.commit('allOwner/addItem',this.form)
+                        this.$message.success('已发送添加请求');
+                        //刷新
+                        // window.location.reload();
+                        // this.$router.go(0);
+
+                    }
+                })
+            }
+
+
 
         },
         deleteSelect(item){
             let data=this.qs.stringify(item)
 
-            this.$confirm('确认删除数据, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then((e)=>{
-                if(this.IsAdmin==1){
-                    this.$store.commit('allOwner/deleteItem',item.id)
-                    this.tempTableData=this.AllOwner.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
-                }
-                //后端
-                this.$axios({
-                    url:'/api/owner/delete',
-                    method:"POST",
-                    data:data,
-                }).then(res=>{
-                    console.log(res);
-                    if(res.data.status==200){
-                        this.$message.success(res.data.data.msg);
-                        //前端删除
-                        //把store里的数据删除
+            if(this.IsAdmin==1){
+                this.$confirm('确认删除数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((e)=>{
+                    if(this.IsAdmin==1){
+                        this.$store.commit('allOwner/deleteItem',item.id)
+                        this.tempTableData=this.AllOwner.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
                     }
+                    //后端
+                    this.$axios({
+                        url:'/api/owner/delete',
+                        method:"POST",
+                        data:data,
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.data.status==200){
+                            this.$message.success(res.data.data.msg);
+                            //前端删除
+                            //把store里的数据删除
+                        }
+                    })
+                }).catch((e)=>{
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 })
-            }).catch((e)=>{
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
-            })
-
-
+            }else{
+                this.$confirm('确认请求删除数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((e)=>{
+                    //后端
+                    this.$axios({
+                        url:'/api/owner/delete',
+                        method:"POST",
+                        data:data,
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.data.status==200){
+                            this.$message.success(res.data.data.msg);
+                            //前端删除
+                            //把store里的数据删除
+                        }
+                    })
+                }).catch((e)=>{
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
+                })
+            }
+    
         },
 
         //form 设为空
@@ -746,6 +817,14 @@ export default {
                 }
             })
         },
+        tableRowClassName({row, rowIndex}) {
+            if (rowIndex == 0 &&this.saved==true) {
+                // console.log(this.ID);
+                // console.log(row);
+                return 'warning-row';
+            }
+            return '';
+        }
 
     },
     computed:{
@@ -767,6 +846,8 @@ export default {
     },
     watch:{
         AllOwner(n,o){
+            this.saved=false
+
             this.currentPage=1
             this.tempTableData=n.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize)
         },
@@ -780,6 +861,7 @@ export default {
             if(n=='')return
             //重新选择
             this.getVillage()
+
         },
         'form.village'(n,o){
             if(n=='')return
@@ -819,7 +901,13 @@ export default {
 
     }
 
+    ::v-deep .warning-row {
+        background: oldlace;
+    }
 
+    .success-row {
+        background: #f0f9eb;
+    }
 
     .short{
         width: 200px;

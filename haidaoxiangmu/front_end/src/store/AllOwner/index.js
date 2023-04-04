@@ -70,8 +70,60 @@ export default {
             state.tableData=state.tableData.filter(item=>item.id!=id)
         },
         addItem(state,data){
-            data.checkStatus='审核中'
+            data.checkStatus='已审核'
+            //替换county
+            state.countyOption.forEach((ci,cv)=>{
+                if(data.county==ci.value){
+                    data.county=parseInt(data.county)
+                    //新增一个值，表示county内容，
+                    data.countyContent=ci.label
+                }
+            })
+            
+            //替换镇
+            state.townData.forEach((ti,tv)=>{
+                if(data.town==ti.id){
+                    data.town=parseInt(data.town)
+                    data.townContent=ti.town
+                }
+            })
+            // //替换村
+            state.villageData.forEach((vi,vv)=>{
+                if(data.village==vi.id){
+                    data.village=parseInt(data.village)
+                    data.villageContent=vi.village
+                }
+            })
             state.tableData.push(data)
+        },
+        updateItem(state,data){
+                state.tableData=state.tableData.filter(item=>item.id!=data.id)
+                //替换county
+                state.countyOption.forEach((ci,cv)=>{
+                    if(data.county==ci.value){
+                        data.county=parseInt(data.county)
+                        //新增一个值，表示county内容，
+                        data.countyContent=ci.label
+                    }
+                })
+                //替换镇
+                state.townData.forEach((ti,tv)=>{
+                    if(data.town==ti.id){
+                        data.town=parseInt(data.town)
+                        data.townContent=ti.town
+                    }
+                })
+                // //替换村
+                state.villageData.forEach((vi,vv)=>{
+                    if(data.village==vi.id){
+                        data.village=parseInt(data.village)
+                        data.villageContent=vi.village
+                    }
+                })
+                setTimeout(()=>{
+                    state.tableData.unshift(data)
+                },100)
+            
         },
 
         setTownData(state,data){
