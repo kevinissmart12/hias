@@ -341,11 +341,29 @@ export default {
                                 ni.productOutput+=parseFloat(i.productOutput)
                                 
                             }
+                            
                         })
                         //合计
                         total.area+=parseFloat(i.area)
                         total.productOutput+=parseFloat(i.productOutput)
+                        
                     })
+                    newTownStatus.forEach((ni,nv)=>{
+                        if(ni.area!=0){
+                            ni.area=ni.area.toFixed(5)
+                        }
+                        if(ni.productOutput!=0){
+                            ni.productOutput=ni.productOutput.toFixed(5)
+                        }
+                        
+                        
+                    })
+                    if(total.area!=0){
+                        total.area=total.area.toFixed(5)
+                    }
+                    if(total.productOutput!=0){
+                        total.productOutput=total.productOutput.toFixed(5)
+                    }
                     newTownStatus.unshift(total)
                 }
             

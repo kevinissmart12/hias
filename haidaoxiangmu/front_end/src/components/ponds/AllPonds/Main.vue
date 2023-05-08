@@ -228,7 +228,7 @@ export default {
             return this.$route.query.id
         },
         IsAdmin(){
-            return this.$store.state.USERINFO.isAdmin
+            return this.$store.state.userinfo.isAdmin
         }
     },
     watch:{

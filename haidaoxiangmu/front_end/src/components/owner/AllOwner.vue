@@ -841,7 +841,7 @@ export default {
             return this.$store.state.allOwner.villageData
         },
         IsAdmin(){
-            return this.$store.state.USERINFO.isAdmin
+            return this.$store.state.userinfo.isAdmin
         }
     },
     watch:{

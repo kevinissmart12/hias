@@ -18,11 +18,11 @@ import statistic from './Statistic/index'
 export default new Vuex.Store({
   state:{
     //全局信息
-    USERINFO:{}
+    userinfo:{}
   },
   mutations:{
-    setUSERINFO(state,data){
-      state.USERINFO=data
+    setUserinfo(state,data){
+      state.userinfo=data
     }
   },
   modules: {

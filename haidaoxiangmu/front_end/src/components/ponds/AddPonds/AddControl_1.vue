@@ -455,6 +455,7 @@ export default {
                 data:data
             }).then(res=>{
                 if(res.data.status==200){
+                    console.log(this.IsAdmin);
                     if(this.IsAdmin==1){
                         this.$message.success('更新成功');
                     }else{
@@ -598,6 +599,9 @@ export default {
         DrawingPolygon(){
             return this.$store.state.ponds.drawingPolygon
         },
+        IsAdmin(){
+            return this.$store.state.userinfo.isAdmin
+        }
 
     },
     watch:{
@@ -686,9 +690,7 @@ export default {
         Id(n){
             this.form.id=n
         },
-        IsAdmin(){
-            return this.$store.state.USERINFO.isAdmin
-        }
+        
     },
     created(){
         this.getOwner()

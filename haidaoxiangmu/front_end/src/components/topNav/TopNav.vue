@@ -51,11 +51,11 @@ export default {
                     {'id':'4-1',content:'全部养殖品种列表',isAdmin:0,url:'/products/all'},
                     {'id':'4-2',content:'添加/编辑养殖品种',isAdmin:0,url:'/products/add'},
                 ]},
-                {'id':'5',content:'统计数据',isAdmin:1,children:[
-                    {'id':'5-1',content:'养殖池塘类型统计',isAdmin:1,url:'/statistic/pondsType'},
-                    {'id':'5-2',content:'养殖品种面积与产量的统计',isAdmin:1,url:'/statistic/productsAO'},
-                    {'id':'5-3',content:'地区养殖情况统计',isAdmin:1,url:'/statistic/townStatus'},
-                    {'id':'5-4',content:'养殖人员随机采样',isAdmin:1,url:'/statistic/randomOwner'},
+                {'id':'5',content:'统计数据',isAdmin:0,children:[
+                    {'id':'5-1',content:'养殖池塘类型统计',isAdmin:0,url:'/statistic/pondsType'},
+                    {'id':'5-2',content:'养殖品种面积与产量的统计',isAdmin:0,url:'/statistic/productsAO'},
+                    {'id':'5-3',content:'地区养殖情况统计',isAdmin:0,url:'/statistic/townStatus'},
+                    {'id':'5-4',content:'养殖人员随机采样',isAdmin:0,url:'/statistic/randomOwner'},
                 ]},
                 {'id':'6',content:'账户管理',isAdmin:0,url:'/account'},
                 {'id':'7',content:'日志审核',isAdmin:1,url:'/dialog'},
@@ -91,7 +91,7 @@ export default {
                 console.log(res.data);
                 if(res.data.status==200){
                     this.userInfo=res.data.data.data
-                    this.$store.commit('setUSERINFO',this.userInfo)
+                    this.$store.commit('setUserinfo',this.userInfo)
                 }
                 
             })

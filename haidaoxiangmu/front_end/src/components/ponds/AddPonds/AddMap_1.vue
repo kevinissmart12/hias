@@ -366,6 +366,7 @@ export default {
             
         },
         //以下为画图的三个函数
+        //绘制中函数
         syncPolygon (e) {
             if (!this.drawingPolygon.editing) {
                 return
@@ -383,6 +384,7 @@ export default {
             }
             this.$set(path, path.length - 1, e.point)
         },
+        //完成绘制后执行的函数
         newPolygon (e) {
             if (!this.drawingPolygon.editing) {
                 return
@@ -419,6 +421,7 @@ export default {
             this.$store.commit('ponds/setAddPond',false)
 
         },
+        //开始绘制函数
         paintPolygon (e) {
             if (!this.drawingPolygon.editing) {
                 return
