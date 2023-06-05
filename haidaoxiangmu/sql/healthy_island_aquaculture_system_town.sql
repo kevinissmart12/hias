@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `healthy_island_aquaculture_system` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `healthy_island_aquaculture_system`;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: healthy_island_aquaculture_system
@@ -51,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-04 16:31:06
+-- Dump completed on 2023-06-05 17:46:53
